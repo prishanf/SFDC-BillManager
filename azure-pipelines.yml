@@ -1,0 +1,32 @@
+
+trigger:
+ branches:
+   include:
+     - yourBranchNameHere
+ 
+stages:
+ - stage: Deploy_To_Org
+   jobs:
+     - job: Job_Name_One
+       pool:
+         # this is the image that will pull down our docker image, we can leave it be
+         vmImage: 'ubuntu-latest'
+       container:
+         # container means all our code will run inside this "container", our container will be our docker image
+         image: hzhao10/
+         # endpoint will be configured in service connections: https://dev.azure.com/HenryDemo10/SFDX%20Demo/_settings/adminservices
+         endpoint: sfdx-docker
+ 
+       steps:
+       # this first checks out the code
+         - checkout: self
+           persistCredentials: true
+         - script: |
+             # execute your authentication script here!
+             # save the user token as an environment variable!
+ 
+             # execute a simple sfdx deploy. We can also modify this with -c flag to make it check only, which turns it into a PR validation command
+             sfdx force:mdapi:deploy -u ${ACCES_TOKEN} -d $(Build.SourcesDirectory) -r false
+           displayName: 'Deploying to Target'
+           enabled: true
+
