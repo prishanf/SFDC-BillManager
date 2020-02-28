@@ -1,0 +1,15 @@
+<aura:component controller="ExpenseController">
+    
+    <aura:registerEvent name="NavigateToList" type="c:NavigateToList" /> 
+    <aura:handler name="init" value="{!this}" action="c.doInit" />
+    <aura:attribute type="String" name="Title" />
+    <aura:attribute type="Expense__c" name="Expense" />
+	<h2>Details Page {!v.Title}</h2>
+	    <P>Helow Howdi</P>
+    	<p>{!v.Expense.Name}</p>
+    	<p>{!v.Expense.prishan__Amount__c}</p>
+        <p>{!v.Expense.CreatedDate}</p>
+    <ui:button label="Back" press="{!c.gotToList}"/>
+    <br/>
+    {!v.body}
+</aura:component>

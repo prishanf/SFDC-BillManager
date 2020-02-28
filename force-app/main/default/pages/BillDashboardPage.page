@@ -1,0 +1,128 @@
+<apex:page controller="BillDashBoardController" showHeader="true" sidebar="false">
+  <c:JavaScriptCSS ></c:JavaScriptCSS>
+    <style>
+     table>th.CurrencyElement{
+     	text-align:right
+        }
+    </style>
+    <div class="row">
+         <div class="col-md-4">
+              <apex:form >
+                Select Year: <apex:selectList value="{!selectedYear}" multiselect="false" size="1">
+                    <apex:actionSupport event="onchange" action="{!test}" reRender="out"/>
+                    <apex:selectOptions value="{!items}"/>
+                </apex:selectList><p/>
+            </apex:form>
+        </div>    
+    </div> 
+    <hr/>
+    <apex:outputPanel id="out"> 
+    <div class="row">
+         <div class="col-md-4"> 
+             <div class="panel panel-info">
+                <div class="panel-heading">Expenses By Category</div>
+          		<div class="panel-body">
+            		 <apex:dataTable value="{!BillsGroupedByCategory}" var="cat" id="theTable" 
+                        styleClass="table table-bordered">
+                        <apex:column >
+                            <apex:facet name="header">Cataegory</apex:facet>
+                            <apex:outputText value="{!cat.category}"/>
+                        </apex:column>
+                        <apex:column styleClass="numericalColumn">
+                            <apex:facet name="header">Total</apex:facet>
+                            <apex:outputText value="{!cat.total}"/>
+                        </apex:column>
+                        <apex:column style="text-align:right" headerClass="CurrencyElement">
+                            <apex:facet name="header">Avg/Month</apex:facet>
+                            <apex:outputText value="{0,number,$#,###,###.00}">
+                            	<apex:param value="{!cat.total/12}" />
+                          	</apex:outputText>
+                        </apex:column>    
+                    </apex:dataTable>
+          		</div>
+        	</div>
+		    <div class="panel panel-warning">
+                <div class="panel-heading">Expenses By Payee</div>
+          		<div class="panel-body">
+            		 <apex:dataTable value="{!BillsGroupedByPayee}" var="payee" id="payeeTable" 
+                        styleClass="table table-bordered">
+                        <apex:column >
+                            <apex:facet name="header">Payee</apex:facet>
+                            <apex:outputText value="{!payee.payee}"/>
+                        </apex:column>
+                        <apex:column style="text-align:right" headerClass="CurrencyElement">
+                          <apex:facet name="header">
+                            <apex:outputtext value="Amount" />
+                          </apex:facet>
+                          <apex:outputText value="{0,number,$#,###,###.00}">
+                            <apex:param value="{!payee.total}" />
+                          </apex:outputText>
+                        </apex:column>
+                        <apex:column style="text-align:right" headerClass="CurrencyElement" >
+                            <apex:facet name="header">Avg/Month</apex:facet>
+                            <apex:outputText value="{0,number,$#,###,###.00}">
+                           	 <apex:param value="{!payee.total/12}" />
+                          	</apex:outputText>
+                        </apex:column>       
+                    </apex:dataTable>
+          		</div>
+        	</div>                            
+         </div>
+  		 <div class="col-md-4">
+             <div class="panel panel-warning">
+                    <div class="panel-heading">Expenses By Month</div>
+                    <div class="panel-body">
+                         <apex:dataTable value="{!BillsGroupedByMonth}" var="exp" id="monthTable" 
+                            styleClass="table table-bordered">
+                            <apex:column >
+                                <apex:facet name="header">Month</apex:facet>
+                                <apex:outputText value="{!exp.MonthName}"/>
+                            </apex:column>
+                            <apex:column style="text-align:right" headerClass="CurrencyElement" >
+                                <apex:facet name="header" >Total</apex:facet>
+                                <apex:outputText value="{!exp.total}"/>
+                            </apex:column>
+                        </apex:dataTable>
+                    </div>
+                </div> 
+         </div>
+        <div class="col-md-4">
+            <div class="alert alert-success" role="alert">
+                <center><h2>Total Expenses</h2><br/>
+                	<h1>
+                	<apex:outputText value="{0,number,$#,###,###.00}">
+                    	<apex:param value="{!TotalCost}" />
+                    </apex:outputText></h1>
+                        <hr/>
+                        <h2>Avg Per Month</h2><br/>
+                            <h1>
+                          <apex:outputText value="{0,number,$#,###,###.00}">
+                              <apex:param value="{!TotalCost/12}" />
+                    	   </apex:outputText></h1>
+                    </center>     
+                
+	        </div>
+        </div>                        
+    </div>    
+    </apex:outputPanel>
+<script>
+  function loadData() {
+    Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.BillDashBoardController.billsGroupedByCategory}',
+        function(result, event){
+            if (event.status) {
+                for (var i=0; i<result.length; i++) {
+                    var name = result[i].category;
+                    var total = result[i].total;
+                    console.log('name: ' + name +', total:' + total);
+                }
+            } else {
+                alert(event.message);
+            }
+        },
+        {escape: true}
+    );
+}
+loadData();
+</script> 
+    
+</apex:page>

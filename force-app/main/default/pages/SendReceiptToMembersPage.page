@@ -1,0 +1,11 @@
+<apex:page standardController="Membership__c" extensions="sendEmail">
+    
+    <apex:pageBlock title="Preview the Receipt for {!member.Member__r.Name}">
+        <apex:messages />
+        <apex:form >
+            <center><apex:commandButton value="Send Email" action="{!send}"/></center>    
+        </apex:form>
+        <br></br> 
+        <c:receipt member="{!member}"/>
+    </apex:pageBlock>
+</apex:page>

@@ -1,0 +1,51 @@
+<apex:component >
+<apex:attribute name="question" description="Question Response Junction" type="Survey_Question_Response__c" required="true"/>
+ <div class="slds-card">
+<!-- <div class="slds-card__header slds-grid">
+		<header class="slds-media slds-media--center slds-has-flexi-truncate">
+		    <div class="slds-media__body">
+		     <h2>{!question.prishan__Survey_Question__r.prishan__Question_Text__c}</h2>
+		    </div>
+	    </header>
+	</div> -->
+	<!-- <p>{!question.prishan__Survey_Question__r.prishan__Section__c}</p>
+	<p>{!question.prishan__Survey_Question__r.prishan__Question_Text__c}</p> -->
+	<div class="slds-card__header slds-grid">
+    	<header class="slds-media slds-media--center slds-has-flexi-truncate">
+      		<div class="slds-media__body">
+        		<h2>{!question.prishan__Survey_Question__r.prishan__Question_Text__c}</h2>
+                <div class="slds-media__figure">
+                            <svg aria-hidden="true" class="slds-icon slds-icon--large slds-icon-standard-opportunity">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.slds, 'assets/icons/standard-sprite/svg/symbols.svg#opportunity')}" />
+                            </svg>
+                        </div>
+      		</div>
+    	</header>
+  	</div>
+  	<div class="slds-card__body slds-align--absolute-center">
+  		
+  		<fieldset class="slds-form-element">
+								  <div class="slds-form-element__control">
+								    <div class="slds-radio--button-group">
+           							  
+								      <span class="slds-button slds-radio--button">
+								        <input type="radio" name="{!question.id}" id="{!question.id}_button_yes" value="true" class="button-group-boolean" />
+								        <label class="slds-radio--button__label" for="{!question.id}_button_yes">
+								          <span class="slds-radio--faux">Yes</span>
+								        </label>
+								      </span>
+								      <span class="slds-button slds-radio--button">
+								        <input type="radio" name="{!question.id}" id="{!question.id}_button_no" value="false" class="button-group-boolean" />
+								        <label class="slds-radio--button__label" for="{!question.id}_button_no">
+								          <span class="slds-radio--faux">No</span>
+								        </label>
+								      </span>
+								    </div>
+								  </div>
+								</fieldset>
+  	</div>
+  	 
+		<textarea name="{!question.id}_note" > </textarea>	
+	<div class="slds-card__footer"/>	
+</div>	 
+</apex:component>

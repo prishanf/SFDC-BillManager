@@ -1,0 +1,10 @@
+<apex:page standardController="Survey__c" extensions="SurveyCreateController" showHeader="true" sidebar="true">
+	<apex:form >
+		<apex:outputLabel value="Select Survey Category"/>
+		<apex:inputField value="{!mysObject.name}"/>
+		<apex:selectList value="{!currentCategory}" size="1" multiselect="false">
+			<apex:selectOptions value="{!categories}" />
+		</apex:selectList>
+		<apex:commandButton action="{!create}" value="Create"/>
+	</apex:form>
+</apex:page>

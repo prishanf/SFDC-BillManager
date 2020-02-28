@@ -1,0 +1,11 @@
+<apex:component controller="CustomObjectHelperCtrl">
+    <apex:attribute name="value" description="object" type="String" required="true"/>
+    <apex:attribute name="hasError" description="object" type="boolean" required="false"/>
+     <apex:attribute name="errorMap" description="object" type="MapWrapper" required="false"/>
+      <div class="requiredInput">
+       	<div class="requiredBlock"></div>
+       	<apex:inputText value="{!value}" label="Label" required="true" onblur="updateFullName()" id="labelField"/>
+        <apex:outputPanel styleClass="errorMsg" rendered="true"><strong>Error:</strong> You must enter a value {!errorMap} </apex:outputPanel>  
+        
+      </div>
+</apex:component>

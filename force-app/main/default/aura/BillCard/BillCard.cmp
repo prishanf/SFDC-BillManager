@@ -1,0 +1,45 @@
+<aura:component implements="flexipage:availableForAllPageTypes" access="global" >
+	<!--Attribute for the Bill Card-->
+    <aura:attribute name="bill" type="Bill__c" />
+    
+    <!-- Add aura:register event tag to register the updateExpnse event -->
+    <aura:registerEvent name="updateBillEvent" type="c:updateBill" />
+    
+    
+     <div class="{!v.bill.prishan__Paid__c == true
+               ? 'listRecord recordLayout green' : 'listRecord recordLayout red'}">
+     <!-- An anchor tag is for handling a click on the item for a navigation action - not in use -->
+        <a aura:id="bill" >
+            <div class="itemTitle">
+                <ui:outputText value="{!v.bill.prishan__Payee__r.Name}"/>
+            </div>
+            <div class="hr"></div>
+            <div class="recordItem">Amount:
+               <!-- <ui:outputNumber value="{!v.bill.prishan__amount__c}" format=".00"/>-->
+                <ui:outputCurrency value="{!v.bill.prishan__amount__c}" format=".00" currencySymbol="$"/>
+            </div>
+
+            <div class="recordItem">Date:
+                <ui:outputDate value="{!v.bill.prishan__Bill_Date__c}"/>
+            </div>
+
+            <div class="recordItem">Category:
+                <ui:outputText value="{!v.bill.prishan__Bill_Category__r.Name}" />
+            </div>
+
+            <div class="recordItem">Paid?
+                <ui:outputText value="{!v.bill.prishan__Paid__c}"/>
+            </div>
+      
+            <div class="recordItem">Paind Date:
+                <ui:outputDate value="{!v.bill.prishan__Paid_Date__c}" />
+            </div>
+            
+            <div class="recordItem">Paid?
+                <ui:inputCheckbox value="{!v.bill.prishan__Paid__c}" 
+                                  change="{!c.onPaidValueChange}"  />
+            </div>
+            
+        </a>
+    </div>    
+</aura:component>

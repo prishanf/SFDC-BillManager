@@ -1,0 +1,11 @@
+<apex:page standardController="Income__c" extensions="RentReceiptCtrl">
+    
+    <apex:pageBlock title="Preview the Receipt for {!Income__c.Tenent__r.Name}">
+        <apex:messages />
+        <apex:form >
+            <center><apex:commandButton value="Send Email" action="{!send}"/></center>    
+        </apex:form>
+        <br/> 
+        <c:RentReceiptComp rentObj="{!Income__c}" amountInText="{!amountInText}"/>
+    </apex:pageBlock>
+</apex:page>

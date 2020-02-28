@@ -1,0 +1,27 @@
+<apex:page controller="HirarchyDataImportCtrl" readOnly="false">
+    <apex:messages />
+    <apex:form id="theForm">
+      <apex:pageBlock >
+          <apex:pageBlockSection >
+            <apex:inputFile value="{!fileContent}" fileName="{!nameFile}"/>
+            <apex:commandButton value="Upload" action="{!upload}"/>
+              <apex:commandButton value="deleteAll" action="{!deleteAll}"/>
+               <apex:commandButton value="Update All" action="{!UpdateData}"/>
+          </apex:pageBlockSection>
+       </apex:pageBlock>
+    </apex:form>
+    {!JSON}
+   <!-- <apex:outputPanel id ="table">
+    <table>
+        <apex:variable var="index" value="{!0}" />
+        <apex:variable var="idx" value="{!index + 1}" />
+        <apex:repeat value="{!Nodes}" var="node" >
+            <tr>
+                 <td>{!idx}</td>
+                <td>{!node}</td>
+                <apex:variable var="idx" value="{!idx + 1}" />
+            </tr>
+        </apex:repeat>
+    </table>
+ </apex:outputPanel>-->
+</apex:page>

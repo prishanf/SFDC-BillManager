@@ -1,0 +1,9 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" >
+	<ltng:require 
+                  styles="/resource/Bootstrap4/bootstrap-4.0.0-dist/css/bootstrap.min.css"
+                  />
+    
+
+    <h1>Helo Worlod</h1>
+    <button class="bt btn-success">MyButton</button>
+</aura:component>

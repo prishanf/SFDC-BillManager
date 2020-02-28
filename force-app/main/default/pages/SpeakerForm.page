@@ -1,0 +1,65 @@
+<apex:page standardController="Speaker__c" extensions="SpeakerControllerExtension" docType="html-5.0" sidebar="false" showHeader="false">
+   	<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+    <style>
+        .error {
+        	border: 1px solid red;
+        }
+    .choose_file{
+    position:relative;
+    display:inline-block;    
+	border-radius:8px;
+    border:#ebebeb solid 1px;
+    width:50px; 
+    padding: 4px 6px 4px 8px;
+    font: normal 14px Myriad Pro, Verdana, Geneva, sans-serif;
+    color: #7f7f7f;
+    margin-top: 2px;
+	background:white
+}
+.choose_file input[type="file"]{
+    -webkit-appearance:none; 
+    position:absolute;
+    top:0; left:0;
+    opacity:0; 
+}
+
+     </style>
+    <apex:form id="sp">
+    	<apex:pageBlock title="Edit Speaker">
+    		<apex:pageBlockSection columns="1">
+            	<apex:inputField value="{!Speaker__c.First_Name__c}" styleClass="req"/>
+                <apex:inputField value="{!Speaker__c.Last_Name__c}" styleClass="req"/>
+                <apex:inputField value="{!Speaker__c.Email__c}"/>
+                <apex:inputField value="{!Speaker__c.Bio__c}"/>
+                <apex:inputField value="{!Speaker__c.Show_Certification_Section__c}"/>
+                 	<apex:inputField value="{!Speaker__c.Are_you_Certified__c}" required="true" styleClass="req"/>
+                 	<apex:inputField value="{!Speaker__c.Is_your_certification_valid__c}" required="true" styleClass="req"/>
+                  
+                        
+                <apex:image url="{!Speaker__c.Picture_Path__c}"/>
+            </apex:pageBlockSection>
+                <div class="choose_file">
+                      	<span>[HHH]</span>
+                  <apex:inputFile value="{!picture}" accept="image/*" />
+                  </div>
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!Save}" value="Save"/>
+                <apex:commandButton action="{!Cancel}" value="Cancel"/>
+                <button id="vl">Validate </button>
+            </apex:pageBlockButtons>
+    	</apex:pageBlock>
+        {!errorMessage}
+    </apex:form>
+    <script>
+        $("form[id$='sp']").submit(function( event ) {
+        //alert( "Handler for .submit() called." );
+          event.preventDefault();
+        	$(".req").each(function(){
+                console.log($(this).id +' '+$(this).val());
+            	if($(this).val()==null || $(this).val()==''){$(this).addClass('error');}
+            });
+        });
+             
+    	
+    </script>
+</apex:page>

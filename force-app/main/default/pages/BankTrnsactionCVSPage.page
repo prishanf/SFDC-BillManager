@@ -1,0 +1,54 @@
+<apex:page controller="BankTransactionsCSVCtrl" >
+
+
+<apex:messages />
+    <apex:form id="theForm">
+      <apex:pageBlock >
+         <apex:pageBlockSection >
+          	  <apex:selectList value="{!selectedbank}" multiselect="false" size="1" label="Select Bank">
+                    <apex:selectOptions value="{!supportedBanks}"/>
+                </apex:selectList>
+          </apex:pageBlockSection>
+          <apex:pageBlockSection >
+            <apex:pageBlockSectionItem >
+            	<apex:outputLabel value="Select CVS File"></apex:outputLabel>
+            	<apex:inputFile value="{!fileContent}" fileName="{!fileName}" />
+            </apex:pageBlockSectionItem>     
+          </apex:pageBlockSection>
+          <apex:pageBlockButtons location="bottom">
+          	<apex:commandButton value="Upload" action="{!upload}" />
+          </apex:pageBlockButtons>    
+       </apex:pageBlock>
+    </apex:form>
+   
+    <apex:pageBlock title="Payee List" rendered="{!payeeList.size>0}">
+        <apex:pageBlockTable value="{!payeeList}" var="payee" rowClasses="odd,even"
+
+                        styleClass="tableClass" >
+            <apex:column title="Name">
+                
+                <apex:outputText value="{!payee}"/>
+            </apex:column>
+       </apex:pageBlockTable>
+   </apex:pageBlock>
+  
+    <apex:pageBlock title="Transaction List" rendered="{!transactionList.size>0}">
+        <apex:pageBlockTable value="{!transactionList}" var="item" rowClasses="odd,even"  styleClass="tableClass" >
+           
+            <apex:column title="Transaction Date" headerValue="Transaction Date">
+                <apex:outputText value="{!item.TransactionDate}"/>
+            </apex:column>
+            <apex:column title="Payee Name" headerValue="Payee Name">
+                <apex:outputText value="{!item.payee}"/>
+            </apex:column>
+            <apex:column title="Cash In" headerValue="Cash In">
+                <apex:outputText value="{0,number, $##,###0.00}">
+                     <apex:param value="{!item.cashIn}"/>
+                </apex:outputText>
+            </apex:column>
+             <apex:column title="Cash Out" headerValue="Cash Out">
+                <apex:outputText value="{!item.cashOut}"/>
+            </apex:column>
+       </apex:pageBlockTable>
+   </apex:pageBlock>
+</apex:page>

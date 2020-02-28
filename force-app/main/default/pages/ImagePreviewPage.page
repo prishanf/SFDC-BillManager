@@ -1,0 +1,15 @@
+<apex:page standardController="Expense__c" renderAs="html" showHeader="false" sidebar="false" standardStylesheets="false">
+<head>
+<style>
+img {
+    max-width:600px;
+    max-height:900px;
+    width:auto;
+    height:auto;
+}
+
+</style></head>
+    <apex:repeat value="{!Expense__c.Attachments}" var="att">
+       <center> <img height="900px" src="/servlet/servlet.FileDownload?file={!att.id}"/></center>
+    </apex:repeat>
+</apex:page>

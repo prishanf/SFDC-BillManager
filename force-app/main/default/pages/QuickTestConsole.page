@@ -1,0 +1,4 @@
+<apex:page >
+   {!$CurrentPage.parameters.id}
+    {!$CurrentPage.parameters.inContextPane }
+</apex:page>

@@ -1,0 +1,40 @@
+<apex:component >
+ <apex:attribute name="member" description="This is the value for the component." type="Membership__c" required="true"/>   
+   <div class="container">
+     <center><h2>Parakeets TMC - Receipt</h2></center>
+     <div class="row show-grid">
+       <div class="span4">Receipt Number :{!member.Name}</div>
+       <div class="span5 offset2 number">Date: <apex:outputText value="  {0,date,MMM dd, yyyy}">
+       <apex:param value="{!member.Payment_Date__c}" /></apex:outputText></div>
+     </div>
+     <div class="row show-grid ">
+       <div class="span2">Received from</div>
+       <div class="span7 mearge-data text-success"><span>{!member.Member__r.Name}</span></div>
+       <div class="span1 offset1 number amount text-success">${!member.Amount__c}</div>
+    </div>
+    <div class="row show-grid ">
+      <div class="span9 text mearge-data text-success">====={!member.Amount_Text__c} DOLLARS EXACTLY ======</div>
+      <div class="span1 offset1 ">Dollars</div>
+    </div>
+    <div class="row show-grid">
+      <div class="span11 text-center">For Membership to Parakeets Toastmaster Club in 3777 Kingsway Burnaby Building, BC</div>
+    </div>
+    <div class="row show-grid">
+      <div class="span1">From</div>
+      <div class="span4 text-center mearge-data text-success"><apex:outputText value="  {0,date,MMM dd, yyyy}">
+       <apex:param value="{!member.Period_Start_Date__c}" /></apex:outputText></div>
+      <div class="span2 text-center">To</div>
+      <div class="span4 text-center mearge-data text-success"><apex:outputText value="  {0,date,MMM dd, yyyy}">
+       <apex:param value="{!member.Period_End_Date__c}" /></apex:outputText></div>
+    </div>
+    <div class="row show-grid ">
+      <div class="span2">Paid By</div>
+      <div class="span2 mearge-data text text-success">{!member.Payment_Method__c}</div>
+    </div>
+    <div class="row show-grid ">
+       <div class="span3 offset4 text-right "> Received By</div>
+       <div class="span4  mearge-data text-center text-success">{!member.Owner.Name}</div> 
+    </div>   
+        
+   </div> 
+</apex:component>

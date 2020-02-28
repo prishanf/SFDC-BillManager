@@ -1,0 +1,3 @@
+<aura:event type="COMPONENT" description="Event to Save A Bill" >
+    <aura:attribute name="bill" type="Bill__c" />
+</aura:event>

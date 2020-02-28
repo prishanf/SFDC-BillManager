@@ -1,0 +1,37 @@
+<aura:component controller="AccountsController">
+   <aura:attribute name="accounts" type="List" />
+   <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+   <!-- Use the Apex model and controller to fetch server side data -->
+   <table class="slds-table slds-table--bordered slds-table--striped">
+      <thead>
+        <tr>
+           <th scope="col"><span class="slds-truncate">ID</span></th>
+           <th scope="col"><span class="slds-truncate">Name</span></th>
+           <th scope="col"><span class="slds-truncate">Type</span></th>
+           <th scope="col"><span class="slds-truncate">Current Year Expense Total</span></th>
+           <th scope="col"><span class="slds-truncate">Expense Total</span></th>
+           <th scope="col"><span class="slds-truncate">Details</span></th>  
+        </tr>
+      </thead>
+      <tbody>
+        <aura:iteration items="{!v.accounts}" var="account">
+         <tr>
+           <td>{!account.Id}</td>
+           <td>{!account.Name}</td>                 
+           <td>{!account.Type}</td>
+           <td>{!account.prishan__Current_Year_Expense_Total__c}</td>                 
+           <td>{!account.prishan__Expense_Total__c}</td>
+           <td>
+              <c:Button_BK class="slds-button slds-button--neutral"
+                 label="Details"
+                 svgXlinkHref="/resource/SLDS103/assets/icons/standard-sprite/svg/symbols.svg#account"
+                 svgClass="slds-icon slds-icon-text-default"
+                 onclick="{!c.showDetails}"
+                 data="{!account.Id}"
+              />
+           </td>
+         </tr>
+        </aura:iteration>
+      </tbody>
+   </table>
+</aura:component>

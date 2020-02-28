@@ -1,0 +1,64 @@
+<apex:page controller="BalanceSheetPDFCtrl" renderAs="pdf" showHeader="false" >
+    <head>
+    <style>
+   	 @page {
+        /* Landscape orientation */
+        size:potrait;
+        
+        /* Put page numbers in the top right corner of each
+        page in the pdf document. */
+        @bottom-right {
+        content: "Page " counter(page) " of " counter(pages);
+        }
+    </style>
+    </head>    
+    <center><h1>{!accName} <br/>Balance Sheet {!taxYear}</h1></center>
+    <h2>Income</h2>
+    <table width="75%" style="margin-left:30px;border-collapse: collapse;">
+        <col width="50%"/>
+        <col width="50%" style="text-aligh:right"/>
+        <tr><th>Rent</th><td style="text-align:right"><apex:outputText value="{0, number, $0,000.00}" > <apex:param value="{!income}" /></apex:outputText></td></tr> 
+    </table>
+    <h2>Expenses</h2>
+    <table width="75%" style="margin-left:30px;border-collapse: collapse;" cellpadding="0">
+        <col width="50%"/>
+        <col width="50%" style="text-aligh:right"/>
+        <apex:repeat value="{!Expenses}" var="item">
+        	<tr><th>{!item['type']}</th><td style="text-align:right"><apex:outputText value="{0, number, $#,###.00}" > <apex:param value="{!item['total']}" /></apex:outputText></td></tr>
+        </apex:repeat> 
+  		<tr >
+            <th style="border-top: 1px solid black;  border-bottom: 5px double black">Total Expenses</th>
+            <td style="border-top: 1px solid black;  border-bottom: 5px double black;text-align:right"><apex:outputText value="{0, number, $0,000.00}" > <apex:param value="{!totalExp}" /></apex:outputText></td>
+        </tr>        
+    </table>
+    
+    <div style="page-break-after:always;"/>
+	<h2>Expense Line Items</h2>
+    <apex:repeat value="{!ExpenseLines}" var="type">
+    	<h3>{!type}</h3>
+        <!--  Main table with quote items -->
+		<apex:dataTable width="90%" value="{!ExpenseLines[type]}" var="c" style="font-size: 75%; margin-left:10px;border-collapse: collapse;" columnsWidth="10%, 20%, 60%, 10%px">
+            <apex:column style="border-bottom: 1px solid black; ">
+                  <apex:facet name="header">Date</apex:facet>
+                  <apex:outputField value="{!c.prishan__Date__c}"/>
+            </apex:column>  
+            <apex:column style="border-bottom: 1px solid black; "> 
+                  <apex:facet name="header">Paid To</apex:facet>
+                  <apex:outputField value="{!c.prishan__Payee__c}"/>
+              </apex:column>
+              <apex:column style="border-bottom: 1px solid black; " >
+                  <apex:facet name="header">Description</apex:facet>
+                  <apex:outputField value="{!c.prishan__Comments__c}"/>
+              </apex:column> 
+            <apex:column style="text-align:right;border-bottom: 1px solid black; ">
+                  <apex:facet name="header" >Amount</apex:facet>
+                  
+                <apex:outputText value="{0, number, $#,###.00}" > <apex:param value="{!c.prishan__Amount__c}" /></apex:outputText>
+              </apex:column>
+    
+             
+  </apex:dataTable>
+    </apex:repeat>
+        
+
+</apex:page>

@@ -1,0 +1,13 @@
+<apex:page controller="BillListCtrl" >
+   
+    
+     <c:DataTableComponent fields="{!ALLFields}" objName="prishan__Bill__c">
+    </c:DataTableComponent> 
+    <br/>
+    <hr/>
+    <br/>
+    <c:DataTableComponent fields="{!Field}" objName="prishan__Bill__c">
+    </c:DataTableComponent>
+   
+    
+</apex:page>

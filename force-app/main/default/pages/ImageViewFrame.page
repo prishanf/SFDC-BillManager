@@ -1,0 +1,3 @@
+<apex:page standardController="Expense__c" renderAs="html">
+    <iframe height="600px" width="100%" src="https://prishan-dev-ed--prishan.na17.visual.force.com/apex/ImagePreviewPage?id={!Expense__c.id}"></iframe>
+</apex:page>

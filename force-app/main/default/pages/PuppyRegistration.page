@@ -1,0 +1,6 @@
+<apex:page controller="PuppyDetail">
+    <apex:form >
+    <c:DetailComp objectName="{!pp.puppy1}" fields="{!fields}" mode="edit">
+    </c:DetailComp>
+        </apex:form>
+</apex:page>

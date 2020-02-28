@@ -1,0 +1,53 @@
+<apex:page controller="BillController">
+ 	<apex:form >
+        <apex:pageBlock mode="edit" title="{!$ObjectType.Bill__c.label} Edit">
+        <apex:pageblocksection title="Information" showheader="true" columns="2">
+           			<apex:outputfield value="{!bill.Name}"/>
+					<apex:inputfield value="{!bill.Payee__c}" required="true"/>
+					<apex:inputfield value="{!bill.Bill_Category__c}" required="true"/>
+					<apex:inputfield value="{!bill.Amount__c}" required="true"/>
+					<apex:inputfield value="{!bill.Bill_Date__c}" required="true"/>
+					<apex:inputfield value="{!bill.Paid__c}" required="false"/>
+					<apex:inputfield value="{!bill.Due_Date__c}" required="false"/>
+					<apex:inputfield value="{!bill.Comments__c}" required="false"/>
+					<apex:inputfield value="{!bill.Paid_Date__c}" required="false"/> 
+           <apex:inputField value="{!bill.Bill_Date__c}"/>
+            <apex:inputCheckbox value="{!isRecurring}" id="theIsRecurring">
+                <apex:actionSupport event="onchange" rerender="hideshow,out,out1" action="{!showRecuring}"/>
+            </apex:inputCheckbox>
+            <apex:outputLabel value="Frequency" for="theFrequency"/>
+            <apex:selectList value="{!Frequency}" multiselect="false" id="theFrequency" size="1">
+                <apex:selectOptions value="{!FrequencyItems}"/>
+            </apex:selectList>
+            <apex:outputLabel value="Repeat" for="therepeat"/>
+            <apex:inputText value="{!repeat}" id="therepeat"  />
+            </apex:pageblocksection> 
+         </apex:pageBlock>   
+        <apex:outputPanel id="hideshow" rendered="{!isRecurring}">
+        	Recurring Inputs
+        </apex:outputPanel>
+                    
+	<apex:commandbutton value="Save" action="{!saveRecurring}"/>		
+		 <apex:outputpanel id="counter">
+            <apex:outputText value="Click Me!: {!count}"/>
+            <apex:actionSupport event="onclick" 
+                                action="{!incrementCounter}" 
+                                rerender="counter" status="counterStatus"/>
+        </apex:outputpanel>
+        <apex:actionStatus id="counterStatus" 
+                           startText=" (incrementing...)" 
+                           stopText=" (done)"/>
+ 	</apex:form>
+    <apex:outputPanel id="out1">REe :{!isRecurring}</apex:outputPanel>
+ 	<apex:outputPanel id="out">
+ 	 	<apex:actionstatus id="status" startText="testing...">
+ 	 	 	<apex:facet name="stop">
+ 	 	 	 	<apex:outputPanel >
+                    {!isRecurring}
+ 	 	 	 	 	<p>You have selected:</p>
+ 	 	 	 	 	<apex:dataList value="{!DateList}" var="c">{!c}</apex:dataList>
+ 	 	 	 	</apex:outputPanel>
+ 	 	 	</apex:facet>
+ 	 	</apex:actionstatus>
+ 	</apex:outputPanel>
+</apex:page>

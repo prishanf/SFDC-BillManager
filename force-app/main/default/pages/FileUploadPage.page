@@ -1,0 +1,35 @@
+<apex:page controller="FileUpload" >
+    <script>
+    </script>
+    <apex:messages />
+    <apex:form id="theForm">
+      <apex:pageBlock >
+          <apex:pageBlockSection >
+            <apex:inputFile value="{!fileContent}" fileName="{!nameFile}"/>
+            <apex:commandButton value="Upload" action="{!upload}"/>
+          </apex:pageBlockSection>
+       </apex:pageBlock>
+    </apex:form>
+    
+    <table>
+        <apex:variable var="index" value="{!0}" />
+        <apex:repeat value="{!payeeList}" var="payee" >
+        <tr>
+            <td>{!index}</td>
+            <td>{!payee}</td>
+        </tr>
+            <apex:variable var="idx" value="{!index + 1}" />
+    </apex:repeat>
+    </table>
+    
+    <table>
+        <apex:repeat value="{!transactionList}" var="item">
+        <tr>
+            <td>{!item.TransactionDate}</td>
+            <td>{!item.payee}</td>
+            <td>{!item.cashIn}</td>
+            <td>{!item.cashOut}</td>
+        </tr>
+    </apex:repeat>
+    </table>
+</apex:page>

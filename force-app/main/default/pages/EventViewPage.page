@@ -1,0 +1,38 @@
+<apex:page controller="EventViewCtrl">
+    
+     <apex:form >
+                Select Year: <apex:selectList value="{!selectedlog}" multiselect="false" size="1">
+                    <apex:actionSupport event="onchange" action="{!test}" reRender="out"/>
+                    <apex:selectOptions value="{!EventItems}"/>
+                </apex:selectList><p/>
+            </apex:form>
+    <apex:outputPanel id="out"> 
+    Log File :  {!selectedlog}
+    <table  border="1">
+        <tr>
+    		<apex:repeat value="{!headings}" var="heading">
+        		<th>{!heading}</th>
+    		</apex:repeat>
+    	</tr>
+        <apex:repeat value="{!rows}" var="row">
+        	<tr>
+    			<apex:repeat value="{!row}" var="col">
+        			<td>{!col}</td>
+    			</apex:repeat>
+    		</tr>
+        </apex:repeat>    
+    </table>
+     <hr/>
+        <ul>
+        <apex:repeat value="{!userIdList}" var="u">
+            <li>{!u}</li>
+        </apex:repeat>
+            </ul>
+        <apex:form >
+        
+      <apex:inputTextarea cols="100" value="{!rowdata}"/>
+        </apex:form>
+    
+    </apex:outputPanel>
+   
+</apex:page>

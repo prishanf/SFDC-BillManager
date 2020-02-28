@@ -1,0 +1,17 @@
+<apex:page controller="AddAttachmentCtrl" >
+  <apex:sectionheader title="Attach File to" subtitle="Attach File to"/>
+   <apex:form >
+              
+       			<h3>1. Select the File<br/></h3>	
+       			<p>Type the path of the file or click the Browse button to find the file.</p>
+                   <apex:inputFile value="{!fileContent}" fileName="{!nameFile}"/>
+                <div class="slds-form-element">
+                    <br/>    
+                <h3>2. Select the File<br/></h3>	
+       			<p>Type the path of the file or click the Browse button to find the file.</p>
+                    <apex:commandButton action="{!saveTest}" value="Save" />
+                    <apex:commandButton action="{!cancel}" value="Cancel" />
+                </div>    
+         
+    </apex:form>
+</apex:page>

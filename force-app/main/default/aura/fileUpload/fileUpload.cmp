@@ -1,0 +1,19 @@
+<aura:component controller="FileController" implements="force:appHostable">
+	<aura:attribute name="parentId" type="Id"/>
+    <aura:attribute name="accept" type="String" default=""/>
+    <aura:attribute name="capture" type="String" default=""/>
+    
+    <aura:handler event="aura:waiting" action="{!c.waiting}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.doneWaiting}"/>
+
+    <aura:registerEvent name="fileSelectedEvent" type="c:fileSelected"/>
+    
+    <div class="container">
+        <input type="file" class="file" aura:id="file" />
+        <ui:button label="Save" press="{!c.save}"/>
+        
+        <div aura:id="uploading" class="notUploading">
+            <img src="/resource/paura__images/loading-gray.gif" alt="uploading" class="small-spinner" /> Uploading...
+    	</div>
+    </div>
+</aura:component>

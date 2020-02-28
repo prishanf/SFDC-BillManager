@@ -1,0 +1,139 @@
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false">
+    <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css'/>
+    <link rel='stylesheet prefetch' href='https://cdn.rawgit.com/esvit/ng-table/v0.8.3/dist/ng-table.css'/>
+
+    <div ng-app="myApp">
+      <div ng-controller="demoController as demo">
+          {{demo.fields}}
+        <h2 class="page-header">Angular ngTable: server-side list</h2>
+        <table ng-table-dynamic="demo.tableParams with demo.cols" show-filter="true" class="table table-condensed table-bordered table-striped">
+             <tr ng-repeat="row in $data">
+                <td ng-repeat="col in $columns">{{row[col.field]}}</td>
+             </tr>
+        </table>
+      </div>
+    </div>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jsforce/1.5.0/jsforce.min.js"></script>
+    <script src="/soap/ajax/28.0/connection.js" type="text/javascript"></script>
+    <script src="/soap/ajax/28.0/apex.js" type="text/javascript"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.0/lodash.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.2/angular.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.2/angular-mocks.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.2/angular-resource.min.js'></script>
+    <script src='https://cdn.rawgit.com/esvit/ng-table/v0.8.3/dist/ng-table.min.js'></script>
+    
+    
+    <script>
+   var objectName = 'prishan__Bill__c';
+   var objectFields = ['Name']; 
+   var objectfieldSetName = [objectName+'.'+'prishan__Bill_Info']; 
+   var jsConn = new jsforce.Connection({ accessToken: '{!$API.Session_Id}' });
+   var con = sforce.connection;
+   con.sessionId ='{!$Api.Session_ID}';
+   var accountResutl = con.describeSObject('Account');
+   var accountFields = accountResutl.getArray('fields');
+   
+      
+   var app = angular.module('myApp', ['ngTable']);
+    (function() {
+      
+      app.controller("demoController", demoController);
+      demoController.$inject = ["NgTableParams"];
+    
+      function demoController(NgTableParams, $resource) {
+        //debugger;
+        self=this;
+        self.fieldSet=['Name'];
+     
+          self.cols = [
+      		{ field: "Name", title: "Name", filter: { name: "text" },show: true },
+      		{ field: "type", title: "Type", filter: { type: "text" },show: true }
+    	]; 
+          
+        
+        this.tableParams = new NgTableParams({
+              page: 2, // show first page
+              count: 5, // count per page
+            },
+			{
+              filterDelay: 300,
+              getData:getData 
+            });
+          
+        function getData(params) {
+             // ajax request to api
+              var sortKey =Object.keys(params.sorting()); 
+              var sort = params.sorting();
+              var fillterKey =Object.keys(params.filter()); 
+              var filter = params.filter();
+              var result;
+		      
+            
+            return jsConn.metadata.read('CustomObject',[objectName]
+            ).then(function(d){
+                console.log('asdasda');
+                console.log(d.fieldSets);
+                console.log(d.fields);
+                self.cols = initCols(d);
+            }).then(function(){
+                console.log('next'); 
+                  var q = "select id, "+self.fieldSet.join(',')+ " from "+ objectName; 
+                  if(fillterKey.length==1 && filter[fillterKey[0]]!=''){
+                    q += " where " + fillterKey[0] +" LIKE '" + filter[fillterKey[0]]+"%'";
+                  }
+                  if(sortKey.length==1){
+                    q += " order by " + sortKey[0] +" " + sort[sortKey[0]];
+                  }
+                  q +=" Limit " + params.count() +" OFFSET 1"; 
+                 console.log(q); 
+                
+                 return jsConn.query(q,function(err,data){
+                    return data.records;
+                 });
+            });
+            /*
+            var q = "select id, "+self.fieldSet.join(',')+ " from "+ objectName; 
+              if(fillterKey.length==1 && filter[fillterKey[0]]!=''){
+                q += " where " + fillterKey[0] +" LIKE '" + filter[fillterKey[0]]+"%'";
+              }
+              if(sortKey.length==1){
+                q += " order by " + sortKey[0] +" " + sort[sortKey[0]];
+              }
+              q +=" Limit " + params.count() +" OFFSET 1"; 
+             console.log(q); 
+            
+            return jsConn.query(q,function(err,data){
+                return data.records;
+             });*/
+            
+          }  
+          
+          function initCols(data){
+              var cols =[];
+              var feildMap = {};
+              var fieldNamesfromSF = data.fieldSets.displayedFields.map(function(field){
+                   return field.field;
+              });
+              self.fieldSet = fieldNamesfromSF;
+              data.fields.forEach(function(item){
+                  //feildMap[item.fullName] = {};
+                   feildMap[item.fullName]=item;
+              });
+             cols = fieldNamesfromSF.map(function(fld){
+                 var obj= {};
+                 obj.field = fld;
+                 obj.title = feildMap[fld].label;
+                 obj.filter = { name: "text" };
+                 obj.show =true;
+                 return obj;
+             }); 
+            console.log(cols);
+            return cols;
+          }
+       }
+                                             
+                                                  
+    })();
+       
+    </script>
+</apex:page>

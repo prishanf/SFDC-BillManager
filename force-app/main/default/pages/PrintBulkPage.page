@@ -1,0 +1,33 @@
+<apex:page standardController="Tenent__c" extensions="BulkReceiptCtrl" docType="html-5.0" >
+<apex:form >
+    <apex:pageBlock >
+        <apex:pageBlockSection title=" {!Tenent__c.Name}">
+           
+            <apex:pageBlockSectionItem >
+                Start Date: <apex:input type="date" value="{!dateSt}"/>
+            </apex:pageBlockSectionItem>
+             <apex:pageBlockSectionItem >
+                End Date: <apex:input type="date" value="{!dateEd}"/>
+            </apex:pageBlockSectionItem>
+            <apex:commandButton value="Show Rents" action="{!showRents}"/>
+            <apex:commandButton value="DownLoad PDF" action="{!downLoadPDF}"/>
+            
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title=" {!Tenent__c.Name}">
+            <apex:pageBlockSectionItem >
+                Start Date: {!startDate} 
+            </apex:pageBlockSectionItem>
+             <apex:pageBlockSectionItem >
+                End Date: {!endDate}
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection title=" {!Tenent__c.Name}" columns="1">
+          <apex:repeat value="{!rentPayments}" var="item">
+             <c:RentReceiptComp rentObj="{!item.Income}" amountInText="{!item.amountInText}"/>
+          </apex:repeat>
+        </apex:pageBlockSection>
+       <br/> 
+        
+    </apex:pageBlock>
+</apex:form> 
+</apex:page>

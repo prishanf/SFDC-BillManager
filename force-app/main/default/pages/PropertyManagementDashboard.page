@@ -1,0 +1,57 @@
+<apex:page controller="PropertyManagementDashboardCtrl" showHeader="true" sidebar="false">
+    <c:JavaScriptCSS ></c:JavaScriptCSS>
+    <apex:remoteObjects jsNamespace="$M">
+        <apex:remoteObjectModel name="prishan__Expense__c" >
+        	
+            <apex:remoteObjectField name="Name" jsShorthand="name"/>
+            <apex:remoteObjectField name="prishan__Date__c" jsShorthand="date"/>
+            <apex:remoteObjectField name="prishan__Amount__c" jsShorthand="amount"/>
+            <apex:remoteObjectField name="prishan__Expense_Account__c" jsShorthand="accName"/>
+        </apex:remoteObjectModel>
+    </apex:remoteObjects>
+    <div class="row">
+        <div class="col-md-4">
+        <div class="panel panel-default">
+         	<div class="panel-heading">2014 Expenses Appartment</div>
+         	<div class="panel-body">
+            <table class="table table-striped">
+              
+            </table>
+            </div>
+        </div>
+        </div>
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-4">
+        </div>
+    </div>
+    <script>
+    
+    
+    
+    
+    Visualforce.remoting.timeout = 120000; // Set timeout at page level
+
+    function getRemoteAccount() {
+        var accountName = 'Coquitlam Apartment';
+
+        // This remoting call will use the page's timeout value
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.PropertyManagementDashboardCtrl.getExpenses}',
+            accountName, 
+            handleResult
+        );
+    }
+
+    function handleResult(result, event) {
+        var total =0;
+        result.forEach(function(rec) {
+                        total += rec.prishan__Amount__c;
+                    console.log(rec.prishan__Expense_Type__c,rec.prishan__date__c,rec.Name,rec.prishan__Payee__c,rec.prishan__Month_Year__c,rec.prishan__Amount__c);
+                    //totala += rec._props.get('amount');                    
+                    });   
+                console.log(total);
+        console.log(result); }
+    getRemoteAccount();
+    </script>    
+</apex:page>

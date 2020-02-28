@@ -1,0 +1,63 @@
+<apex:component >
+ <apex:attribute name="rentObj" description="Componet for the rental receipt comp" type="Income__c" required="true"/>
+ <apex:attribute name="amountInText" description="amount In Text" type="String" required="true"/> 
+ <html> 
+   <head>
+   <apex:stylesheet value="{!$Resource.bootstrap}"/>  
+   <style>
+      @page { 
+        size:landscape;  
+        @bottom-right {content: "Page " counter(page) " of " counter(pages);} 
+     }
+    body{height:400px;}
+    .show-grid [class*="span"] {background-color: #fff;margin-top: 10px; margin-bottom: 10px;}
+    .number[class*=span]{text-align: right;padding:0 10px;}
+    .text[class*=span]{text-align: center;}
+    .amount{font-size:24px;}
+    .mearge-data{font-size: 20px;font-weight:bold}
+    .container{border:1px solid;height:400px;font-size: 18px; }
+    .text-success {color:black}
+  </style> 
+ </head>
+ <body>
+     <div class="container show-grid">
+     <center><h2>Rent Receipt</h2></center>
+     <div class="row">
+       <div class="span7">Date: <apex:outputText value="  {0,date,MMM dd, yyyy}">
+       <apex:param value="{!rentObj.Date__c}" /></apex:outputText></div>  
+       <div class="span4 text-right">
+           Receipt Number :{!rentObj.Name}
+         </div>
+       
+     </div>
+     <div class="row show-grid ">
+       <div class="span2">Received from</div>
+       <div class="span6 mearge-data text-success text-center"><span>{!rentObj.Tenent__r.Name}</span></div>
+       <div class="span1 offset1 number amount text-success">${!rentObj.Amount__c}</div>
+    </div>
+    <div class="row show-grid ">
+      <div class="span8 text mearge-data text-success">{!amountInText}</div>
+      <div class="span1 offset1 ">Dollars</div>
+    </div>
+    <div class="row show-grid">
+      <div class="span1">For </div> 
+      <div class="span8 text mearge-data text-success">{!rentObj.Account__r.Address__c}</div>
+    </div>
+    <div class="row show-grid">
+      <div class="span3">For the Month Of </div>
+      <div class="span4 text-center text mearge-data text-success"><apex:outputText value="  {0,date,MMM, yyyy}">
+       <apex:param value="{!rentObj.Date__c}" /></apex:outputText></div>
+    </div>
+    <div class="row show-grid ">
+      <div class="span2">Paid By</div>
+      <div class="span2 mearge-data text text-success">{!rentObj.Payment_Type__c}</div>
+    </div>
+    <div class="row show-grid ">
+       <div class="span2 offset5 "> Received By</div>
+       <div class="span4  mearge-data text-center text-success">Warnakulasuriya Fernando</div> 
+    </div>   
+        
+   </div>
+   </body>
+ </html> 
+</apex:component>

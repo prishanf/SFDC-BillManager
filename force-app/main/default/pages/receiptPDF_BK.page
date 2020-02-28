@@ -1,0 +1,56 @@
+<apex:page standardController="Membership__c" renderAs="html" showHeader="false" applyHtmlTag="false" applyBodyTag="false">
+  <html> 
+   <head>
+   <apex:stylesheet value="{!$Resource.bootstrap}"/>  
+   <style>
+      @page { 
+  		size:landscape;  
+   	 	@bottom-right {content: "Page " counter(page) " of " counter(pages);} 
+	 }
+    body{height:400px;}
+ 	.show-grid [class*="span"] {background-color: #fff;margin-top: 10px; margin-bottom: 10px;}
+    .number[class*=span]{text-align: right;padding:0 10px;}
+    .text[class*=span]{text-align: center;}
+    .amount{font-size:24px;}
+    .mearge-data{font-size: 20px;border-bottom:1px solid;font-weight:bold}
+    .container{border:1px solid;height:400px;font-size: 18px; }
+  </style> 
+ </head>
+ <body>
+   <div class="container">
+     <center><h2>Parakeets TMC - Receipt</h2></center>
+     <div class="row show-grid">
+       <div class="span4">Receipt Number :123123 </div>
+       <div class="span5 offset2 number">Date: September 31,2014 </div>
+     </div>
+     <div class="row show-grid ">
+       <div class="span2">Received from</div>
+       <div class="span7 mearge-data text-success"><span>VINCENT LI</span></div>
+       <div class="span1 offset1 number amount text-success">$50.00</div>
+    </div>
+    <div class="row show-grid ">
+      <div class="span9 text mearge-data text-success">================= FIFTY DOLLERS EXACTLY =================</div>
+      <div class="span1 offset1 ">Dollers</div>
+    </div>
+    <div class="row show-grid">
+      <div class="span11 text-center">For Memebership to Parakeets Toastmaster Club in 3777 Kingsway Burnaby Building, BC</div>
+    </div>
+    <div class="row show-grid">
+      <div class="span1">From</div>
+      <div class="span4 text-center mearge-data text-success">October 1, 2014</div>
+      <div class="span2 text-center">To</div>
+      <div class="span4 text-center mearge-data text-success">March 31, 2015</div>
+    </div>
+    <div class="row show-grid ">
+      <div class="span2">Paid By</div>
+      <div class="span2 mearge-data text text-success">Cheque</div>
+    </div>
+    <div class="row show-grid ">
+       <div class="span3 offset4 text-right "> Received By</div>
+       <div class="span4  mearge-data text-center text-success">Prishan Fernando</div> 
+    </div>   
+        
+   </div> 
+</body>
+</html>
+</apex:page>

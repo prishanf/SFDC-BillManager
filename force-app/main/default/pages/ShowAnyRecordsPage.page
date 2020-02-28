@@ -1,0 +1,114 @@
+<apex:page controller="ShowAnyRecordCtrl">
+
+	<apex:includeScript value="{!URLFOR($Resource.materialize, 'js/jquery.min.js')}"/>
+	<apex:includeScript value="{!URLFOR($Resource.materialize, 'js/materialize.min.js')}"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <apex:sectionHeader subtitle="Show Records"/>
+    <apex:form >
+         <apex:outputPanel id="diplayFields">
+          <apex:pageBlock title="Select Object">
+              <apex:pageBlockSection columns="1">
+                  <apex:pageBlockSectionItem >
+                      <apex:outputLabel >Object Name</apex:outputLabel>
+                      <apex:selectList value="{!seletcedOBj}" multiselect="false" size="1">
+                            <apex:selectOptions value="{!allObjects}" ></apex:selectOptions>
+                            <apex:actionSupport event="onchange" action="{!showRecords}" rerender="diplay,diplayFields" status="myStatus2" />
+                        </apex:selectList>
+                 </apex:pageBlockSectionItem>
+                  <!--<apex:pageBlockSectionItem rendered="{!displayResult}">
+                    	<apex:outputLabel >Fields</apex:outputLabel>	
+                        <apex:selectList value="{!selObjFileds}" multiselect="true" size="5" label="Fields">
+                            <apex:selectOptions value="{!objectFields}" ></apex:selectOptions>
+                            <apex:actionSupport event="onchange" action="{!updateCols}" rerender="diplay,objField" status="myStatus2" />
+                        </apex:selectList>
+                  </apex:pageBlockSectionItem>-->
+                  <apex:pageBlockSectionItem rendered="{!displayResult}">
+                     <c:MultiSelectPicklist leftLabel="Available Fields"
+                        leftOption="{!avilableobjectFields}"
+                        rightLabel="Selected Field"
+                        rightOption="{!selObjFiledsOptions}"
+                        size="5"
+                        width="150px"/>
+                   </apex:pageBlockSectionItem>
+                   <apex:pageBlockSectionItem >
+                       <apex:commandButton value="update" action="{!updateCols}" rerender="diplay"/>
+                  </apex:pageBlockSectionItem>
+              </apex:pageBlockSection>
+              
+         </apex:pageBlock>
+             
+        </apex:outputPanel>
+    
+   
+    <apex:outputPanel id="diplay" >
+        
+       <!-- <apex:outputPanel rendered="{!displayResult}">
+           <apex:pageBlock title="{!seletcedOBj}">
+                <apex:pageBlockTable value="{!objData}" var="da">
+                    <apex:repeat value="{!selObjFileds}" var="c">
+                    	<apex:column value="{!da[c]}"/>     
+                    </apex:repeat>
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+        </apex:outputPanel> -->
+      <apex:pageBlock id="ListSec" title="Records">
+      <apex:messages /> 
+     
+           <apex:outputPanel rendered="{!objData.size > 0 }">
+            <apex:pageBlockTable value="{!objData}" var="cont" id="mid" width="100%">
+                <apex:column headerValue="Action" styleClass="actionColumn">
+                    <apex:outputLink target="_blank" value="/{!cont.id}">View</apex:outputLink> 
+                    <apex:outputLink target="_top" value="/{!cont.id}/e" rendered="{!ShowEdit}" >| Edit </apex:outputLink>
+                </apex:column>
+                <apex:repeat value="{!FieldsList}" var="f">
+                    <apex:column value="{!cont[f['name']]}" rendered="{!f['sortable']=false}"/>
+                    <apex:column value="{!cont[f['name']]}" rendered="{!f['sortable']=true}" >
+                         <apex:facet name="header">
+                           <apex:commandLink immediate="true" reRender="diplay" status="status"  action="{!paginator.doSort}" value="{!$ObjectType[seletcedOBj].fields[f['name']].Label}{!IF(paginator.sortExpression==f['name'],IF(paginator.sortDirection='ASC','▼','▲'),'')}">
+                               <apex:param value="{!f['name']}" name="column" assignTo="{!paginator.sortExpression}" ></apex:param> 
+                           </apex:commandLink>
+							
+                         </apex:facet>
+                       </apex:column>
+                </apex:repeat>
+            </apex:pageBlockTable>
+            <apex:panelGrid columns="8" rendered="{!paginator.showPaginationButtons}">
+                <apex:commandButton styleClass="pgbtn" status="status" reRender="diplay" value=" |< " action="{!paginator.first}" disabled="{!!paginator.hasPrevious}" title="FirstPage"/>
+                <apex:commandButton styleClass="pgbtn" status="status" reRender="diplay"  value=" < " action="{!paginator.previous}" disabled="{!!paginator.hasPrevious}" title="PreviousPage"/>
+                <apex:commandButton styleClass="pgbtn" status="status" reRender="diplay"  value=" > " action="{!paginator.next}" disabled="{!!paginator.hasNext}" title="Label.NextPage"/>
+                <apex:commandButton styleClass="pgbtn" status="status" reRender="diplay"  value=" >| " action="{!paginator.last}" disabled="{!!paginator.hasNext}" title="Label.LastPage"/>
+                <apex:outputText value="{!paginator.info}"/>
+                <apex:panelGrid columns="2" rendered="{!paginator.showPaginationButtons}" style="position: absolute; right: 20px;">
+                    <apex:selectList value="{!pageSize}" multiselect="false" size="1">
+                        <apex:selectOption itemLabel="10" itemValue="10" />
+                        <apex:selectOption itemLabel="20" itemValue="20" />
+                        <apex:selectOption itemLabel="50" itemValue="50" />
+                        <apex:selectOption itemLabel="20" itemValue="100" />
+                        <apex:actionSupport event="onchange" action="{!showRecords}" rerender="diplay,diplayFields" status="myStatus2" />
+                    </apex:selectList>
+                 </apex:panelGrid>     
+            </apex:panelGrid> 
+            <apex:outputPanel style="color:#4AA02C;font-weight:bold">
+                  <apex:actionStatus id="status">
+                    <apex:facet name="start">
+                    <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.25; z-index: 1000; background-color: black;">&nbsp;</div>
+                    <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 15% 50%">
+                        <div style="display: inline-block; padding: 2px; background-color: #fff; width: 125px;">
+                            <img src="/img/loading.gif" style="float: left; margin: 8px;" />
+                            <span style="display: inline-block; padding: 10px 0px;">Please Wait...</span>
+                        </div>
+                    </div>
+                    </apex:facet>
+                </apex:actionStatus>
+              </apex:outputPanel>   
+            </apex:outputPanel>
+          <apex:outputPanel rendered="{!paginator.NoOfRecords = 0 }">
+           <table class="list" border="0" cellspacing="0" cellpadding="0">
+                <tbody><tr class="headerRow"><th scope="col" class="noRowsHeader">No records to display </th></tr>
+            </tbody></table>
+           </apex:outputPanel>
+   
+    </apex:pageBlock>
+    </apex:outputPanel>
+        </apex:form>
+</apex:page>

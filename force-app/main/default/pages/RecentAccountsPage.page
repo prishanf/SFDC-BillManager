@@ -1,0 +1,12 @@
+<apex:page controller="AccountExtCtr">
+ <apex:pageBlock id="ri">                     
+           <apex:pageblocksection title="Recent Accounts" columns="1" collapsible="false">
+               <apex:pageblockTable value="{!recentAccounts}" var="item" id="pbt" >
+                    <apex:column value="{!item['Id']}"/>
+                    <apex:column value="{!item['Name']}"/>
+                   <apex:column value="{!item['Type']}"/>
+                </apex:pageblockTable>
+            </apex:pageblocksection>
+         </apex:pageBlock>
+ 
+</apex:page>

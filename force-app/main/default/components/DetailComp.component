@@ -1,0 +1,26 @@
+<!--
+Provide Detail/Edit view of for the provied fields in a Section.
+-->
+<apex:component >
+    <apex:attribute name="objectName" description="Name of the Object or Object Instace" type="sObject" required="true" />
+    <apex:attribute name="fields" description="List of field to display. Provide as an array or field set" type="String[]" required="true"/>
+    <apex:attribute name="title" description="Section Title" type="String" />
+    <apex:attribute name="mode" description="Display Mode: Detail Mode or Edit Mode " type="String" />
+    <apex:attribute name="collapsible" description="If Section is collapsible when in detial mode" type="boolean" required="false"  />
+    <apex:outputPanel id="custdetailSec" >   
+        <apex:pageBlock mode="{!mode}" rendered="{!mode != 'edit'}">
+            <apex:pageBlockSection columns="2" title="{!title}" collapsible="true" showHeader="true" >  
+              <apex:repeat value="{!Fields}" var="f">
+                    <apex:outputField value="{!objectName[f]}"/>
+              </apex:repeat>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        <apex:pageBlock mode="{!mode}" rendered="{!mode = 'edit'}">
+            <apex:pageBlockSection columns="2" title="{!title}" collapsible="{!collapsible}" showHeader="true" >
+              <apex:repeat value="{!Fields}" var="f">
+                    <apex:inputField value="{!objectName[f]}"/>
+              </apex:repeat>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+   </apex:outputPanel>
+</apex:component>

@@ -1,0 +1,83 @@
+<apex:page controller="ParentChildCtrl">
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
+     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.1/jstree.min.js"></script>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+    
+     <div id="jstree_demo_div"></div>
+        <script>
+    var data = JSON.parse('{!JSON}');
+    console.log(data);
+    var newMap = data.map(function(item){
+    	return {"id":item.Id,"parent":item.prishan__Parent_Product_Category__c ==null?"#":item.prishan__Parent_Product_Category__c ,"text":item.Name}
+    });
+    console.log(newMap);
+    
+  $(document).ready(function(){ 
+    //fill data to tree  with AJAX call
+    $('#jstree_demo_div').jstree({
+        'core' : {
+			'data' : newMap
+            ,'check_callback' : true,
+						'themes' : {
+							'responsive' : false
+						}
+			},
+			'plugins' : ['contextmenu','wholerow',"checkbox","dnd"]
+		}).on('create_node.jstree', function (e, data) {
+		          console.log(e,data);
+					
+				}).on('rename_node.jstree', function (e, data) {
+        			console.log(e,data);
+					
+				}).on('delete_node.jstree', function (e, data) {
+					console.log(e,data);
+				}).on('move_node.jstree',function(e,data){
+    				console.log(e,data);
+        			//data.instance.refresh();
+    			});
+});
+    /*
+  $('#jstree_demo_div').jstree({
+    "plugins" : [ "wholerow", "checkbox", "contextmenu","dnd","state", "types", "wholerow"  ],  
+    'core' : {
+    	'data' : newMap
+		},
+     contextmenu: {items: customMenu} 
+    }).on('create_node.jstree', function (e, data) {
+          console.log(e,data);    
+          /*$.get('response.php?operation=create_node', { 'id' : data.node.parent, 'position' : data.position, 'text' : data.node.text })
+            .done(function (d) {
+              data.instance.set_id(data.node, d.id);
+            })
+            .fail(function () {
+              data.instance.refresh();
+            });
+        });
+    */
+    function customMenu(node) {
+    // The default set of all items
+       var self = this;
+        var items = {
+            renameItem: { // The "rename" menu item
+                label: "Rename",
+                action: function () {console.log(node.text);}
+            },
+            deleteItem: { // The "delete" menu item
+                label: "Delete",
+                action: function () {console.log(node);}
+            },
+            crateItem: { // The "delete" menu item
+                label: "Create",
+                action: function () {console.log('create',node,self);}
+            }
+        };
+    
+        if ($(node).hasClass("folder")) {
+            // Delete the "delete" menu item
+            delete items.deleteItem;
+        }
+    
+        return items;
+    }
+        </script>
+</apex:page>

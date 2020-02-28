@@ -1,0 +1,155 @@
+<apex:page standardController="Survey__c" extensions="SurveyTakeController" docType="html-5.0" showHeader="false" sidebar="false" standardStylesheets="false" 
+applyBodyTag="false" applyHtmlTag="false">
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<head>
+	<title>Peets Survey</title>
+	<apex:slds />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.js"></script>
+	<script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+</head>
+<body>
+<div class="slds-scope">
+    <div class="main-wrapper">
+    	<form id="survay">
+    	<div class="slds-grid slds-wrap slds-grid--pull-padded">
+		  <div class="slds-p-horizontal--small slds-size--1-of-1">
+		  	<apex:repeat value="{!sectionNames}" var="SectionKey">
+				<section id="{!SectionKey}">
+					<h2>{!SectionKey}</h2><br/>
+					<apex:repeat value="{!questionMap[SectionKey]}" var="question">
+					<c:SurveryQuestionComponent question="{!question}"/>
+					<br/>
+					</apex:repeat>
+				</section>		
+			</apex:repeat>
+		  </div>
+		</div>
+		
+		</form>
+		<button id="p">Prvious</button>
+		<button id="n">Next</button>
+	</div>
+</div>
+<h2>JSON</h2>
+<pre id="result">
+</pre>
+</body>
+		
+
+	<script>
+    
+    function isLightningExperienceOrSalesforce1() {
+    	return((typeof sforce != 'undefined') && sforce && (!!sforce.one));
+    }
+    function redirect(){
+        if( isLightningExperienceOrSalesforce1() ) {
+       		console.log('In Lightning');
+        }else {
+            console.log('{!URLFOR($Action.Survey__c.Edit, Survey__c.id)}');
+            window.location.href='/{!Survey__c.id}?nooverride=1';
+        }
+    }
+    redirect();
+	var page = 0;
+	var navSections = $('section');
+	navidateTo(page);
+	function navidateTo(page){
+		
+		for(var i=0;i<navSections.length;i++){
+			if(page==i){
+				$(navSections[i]).show();	
+			}else{
+				$(navSections[i]).hide();	
+			}
+			
+		}
+	}
+	$('#n').click(function(){
+		if(page < navSections.length-1){
+			page++;
+			navidateTo(page);
+			$(this).removeAttr('disabled','disabled');
+			 $('#result').text(JSON.stringify($('form').serializeObject()));
+            console.log($('form').serializeObject());
+		}
+		
+		
+	});
+
+	$('#p').click(function(){
+		if(page > 0){
+			page--;
+			navidateTo(page);
+			
+		}
+		
+	});
+
+
+	$.fn.serializeObject = function()
+		{
+		    var o = {};
+		    var a = this.serializeArray();
+		    $.each(a, function() {
+		        if (o[this.name] !== undefined) {
+		            if (!o[this.name].push) {
+		                o[this.name] = [o[this.name]];
+		            }
+		            o[this.name].push(this.value || '');
+		        } else {
+		            o[this.name] = this.value || '';
+		        }
+		    });
+		    return o;
+		};
+
+		var questions = {!QuestionsJSON};
+		//console.log(questions);
+
+		var sections ={};
+		var sectionsNames = [];
+
+		questions.forEach(function(item){
+		  var secName = item.prishan__Survey_Question__r.prishan__Section__c ;
+		  //console.log(secName);
+		  if(sections[secName]){
+		    sections[secName].push(item);
+		  }else{
+		    sections[secName]= [];
+		    sections[secName].push(item);
+		    sectionsNames.push(secName);
+		  }
+		});
+
+		function buildSections(sections){
+		  var mainDiv =$("#q");
+		   sectionsNames.forEach(function(name){
+		     mainDiv.append('<ul>'+name+'<ul>');
+		     buildQuestion(name,mainDiv);
+		   });
+		}
+
+		function buildQuestion(section,el){
+		  console.log('section',section);
+		  console.log('el',el);
+		  var qlist  = sections[section];
+		  console.log('qlist',qlist);
+		  qlist.forEach(function(qs){
+		     qsData = qs.prishan__Survey_Question__r;
+		     if(qsData.prishan__Type__c=='Single Select--Vertical'){
+		     	qsData.yesNo = true;
+		     }else{
+		     	qsData.yesNo = false;
+		     }
+		     var source   = $("#entry-template").html();
+			 var template = Handlebars.compile(source);
+		     el.append(template(qsData));
+		   });
+		  
+		}
+		console.log(sections);
+		//buildSections(sections);
+
+	</script>
+</html>
+</apex:page>

@@ -1,0 +1,148 @@
+<apex:page >
+    <link rel="stylesheet" href="https://rawgit.com/esvit/ng-table/master/dist/ng-table.min.css"/>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jsforce/1.5.0/jsforce.min.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.2/angular.min.js'></script>
+    <script src="https://rawgit.com/esvit/ng-table/master/dist/ng-table.min.js"></script>
+   <div ng-app="Listview">
+   
+     <div ng-controller="ListViewCtrl">
+         <!-- Table -->
+          <table ng-table-dynamic="tableParams with cols"
+             class="table table-condensed table-bordered table-striped">
+                 <tr ng-repeat="row in $data">
+                     <td ng-repeat="col in $columns">{{row[col.field]}}</td>
+                   </tr>
+           </table>           
+                    
+     </div>
+ 
+   
+   </div>
+    
+    <script>
+       var objectName = '{!$CurrentPage.parameters.relobj}';
+       var linkfeild = '{!$CurrentPage.parameters.relfield}';
+       var pid = '{!$CurrentPage.parameters.pid}';
+       console.log(objectName,linkfeild ,pid);
+       
+       var objectFields = ['Name']; 
+       var conn = new jsforce.Connection({ accessToken: '{!$API.Session_Id}' });
+       var query = 'SELECT Id, Name FROM ' + objectName + ' where ' + linkfeild + " ='" + pid + "'";
+       console.log(query);
+       
+        function handleResult(res){
+            console.log(res);
+        }
+        
+       var app = angular.module('Listview',['ngTable']);
+       app.controller('ListViewCtrl',function($scope,METAService,DataService,NgTableParams){
+       
+       $scope.cols = [
+          { field: "Name", title: "Name", show: true,filter: { name: "text" } ,sortable: "Name"}
+        ];
+
+        $scope.tableParams = new NgTableParams();
+       
+        
+        $scope.init = function () {
+            METAService.getFieldSetFields('prishan__payee__c','prishan__ListCols').then(function(data){
+                 $scope.fields = data;
+                 $scope.fieldsNames= data.map(function(item){
+                     return item.fullName;
+                 });
+                  $scope.cols = data.map(function(item){
+                     var obj = {};
+                     obj.field = item.fullName;
+                     obj.title = item.label;
+                     obj.show = true;
+                     obj.filter ={};                   
+                     obj.filter[item.fullName] = "text";
+                     obj.sortable=item.fullName;
+                     return obj;
+                 });
+                 console.log ('=>',$scope.cols);
+                 console.log ('=>',$scope.fieldsNames);
+                 queryData();
+            });
+        }
+     
+        $scope.init();
+        
+        function queryData(fields){
+           var fieldList = $scope.fieldsNames.join(',');
+           console.log('fields names',fieldList);
+           var query = 'SELECT ' + fieldList + ' FROM ' + objectName + ' where ' + linkfeild + " ='" + pid + "'";
+           console.log(query);
+            
+           DataService.queryData(query).then(function(res){
+              console.log(res); 
+              $scope.records = res;
+              $scope.tableParams.settings({
+              dataset: res
+        }); 
+           }); 
+        }
+       
+       });
+       
+       
+        app.factory('METAService', function($q){
+          var service = {};
+          var cachedObject;
+        
+          service.getFieldSetFields = function(objName,fieldSetName) {
+            var deferred = $q.defer();
+            conn.metadata.read('CustomObject',[objName],function(err, meta) {
+              if (err) {  }
+              cachedObject = meta;
+              var fields = []
+              if(meta.fieldSets){
+                 if(meta.fieldSets instanceof Array){
+                    var value = meta.fieldSets.find(function(item){
+                        return item.fullName===fieldSetName;
+                      });
+                    var fields = value.availableFields.map(service.getFieldInfo);  
+                    deferred.resolve(fields);
+                 }else{
+                    deferred.resolve(meta.fieldSets); 
+                 }
+              }else{
+                  deferred.resolve('');
+              }
+              
+            });
+            return deferred.promise;
+          }
+          
+          service.getFieldInfo = function(field){
+             if(field.field==='Name'){
+                 var nameField = cachedObject.nameField;
+                 nameField.fullName ='Name';
+                 nameField.required = "true";
+                 return nameField;
+             }else{
+                 return cachedObject.fields.find(function(item){return item.fullName === field.field;});
+             }
+          } 
+        
+          return service;
+        });
+       
+        app.factory('DataService', function($q){
+          var service = {};
+          service.queryData = function(sql) {
+            var deferred = $q.defer();
+            conn.query(sql,function(err, resp) {
+              if (err) { return console.error(err);}
+              deferred.resolve(resp.records);
+            });
+            return deferred.promise;
+          }
+          
+    
+        
+          return service;
+        });
+       
+   </script>
+</apex:page>

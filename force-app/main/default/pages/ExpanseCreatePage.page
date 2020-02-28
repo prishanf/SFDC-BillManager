@@ -1,0 +1,126 @@
+<apex:page standardcontroller="Expense__c" standardstylesheets="false" showheader="false" extensions="AttachFileCtrl" docType="html-5.0">
+	<apex:stylesheet value="/resource/SLDS103/assets/styles/salesforce-lightning-design-system-vf.min.css"/>
+	   <apex:form >
+		    <div class="slds">
+		   			<div class="slds-grid slds-grid--align-spread ">
+						    <apex:commandLink action="{!saveTest}" value="Save" styleClass="slds-button slds-button--brand">
+                 			</apex:commandLink> 
+						<button class="slds-button slds-button--neutral" onclick="reset();">
+							  Cancel
+							  <span aria-hidden="true" class="slds-button__icon slds-button__icon--right">
+					      		<img src="/resource/SLDS103/assets/icons/utility/refresh.svg" alt="Placeholder" style="max-width: 16px; -webkit-filter: invert(60%);"/>
+					          </span>
+						</button>	
+					</div>
+			        <div class="slds-form--stacked slds-m-top--small">
+						<div class="slds-form-element">
+						  <label class="slds-form-element__label" for="sample1">{!$ObjectType.Expense__c.fields.Payee__c.Label}</label>
+						  <div class="slds-form-element__control">
+						    <apex:inputfield styleclass="slds-input slds-is-required" value="{!newRec.Payee__c}"/>
+						  </div>
+						</div>
+						
+						<div class="slds-form-element">
+						  <label class="slds-form-element__label" for="sample1">{!$ObjectType.Expense__c.fields.Amount__c.Label}</label>
+						  <div class="slds-form-element__control slds-picklist">
+						    <apex:inputfield styleclass="slds-select " value="{!newRec.Amount__c}" />
+						  </div>
+						</div>
+						
+						<div class="slds-form-element">
+						  <label class="slds-form-element__label" for="sample1">{!$ObjectType.Expense__c.fields.Expense_Account__c.Label}</label>
+						  <div class="slds-form-element__control slds-lookup">
+						    <apex:inputfield styleclass="slds-textarea" value="{!newRec.Expense_Account__c}"/>
+						  </div>
+						</div>
+                        <div class="slds-form-element">
+						  <label class="slds-form-element__label" for="sample1">{!$ObjectType.Expense__c.fields.Date__c.Label}</label>
+						  <div class="slds-form-element__control slds-date">
+						      <apex:inputField id="dateField" value="{!newRec.Date__c}" type="date"/>
+                           </div>
+						</div>
+                        <div class="slds-form-element">
+						  <label class="slds-form-element__label" for="sample1">{!$ObjectType.Expense__c.fields.Date__c.Label}</label>
+						  <div class="slds-form-element__control slds-date">
+						  		<apex:inputFile value="{!fileContent}" fileName="{!nameFile}"/>
+                   	  		</div>
+						</div>
+                        
+					</div>
+             
+				</div>
+            
+           <apex:actionfunction name="save" action="{!saveMe}" />
+			    <apex:actionfunction name="reset" action="{!reset}" />
+			</apex:form>
+</apex:page>
+
+
+<!--<apex:page standardcontroller="Expense__c" extensions="AttachFileCtrl" showHeader="false" standardStylesheets="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" docType="html-5.0">
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">    
+<head>
+  <title>Salesforce Lightning Design System Trailhead Project</title>
+  <apex:stylesheet value="{!URLFOR($Resource.SLDS103, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+</head>
+<apex:remoteObjects >
+  <apex:remoteObjectModel name="Contact" fields="Id,Name,Title,LastModifiedDate,PhotoUrl"/>
+</apex:remoteObjects>
+    
+    
+    <apex:messages />
+	<apex:sectionheader title="{!$ObjectType.Expense__c.label} Edit" subtitle="{!IF(ISNULL(Expense__c.Name), 'New Expense',Expense__c.Name)}"/>
+	<apex:form >
+		<apex:pageblock mode="edit" title="{!$ObjectType.Expense__c.label} Edit">
+			<apex:pageblockbuttons >
+				<apex:commandbutton value="Save" action="{!Save}"/>
+				<apex:commandbutton value="Cancel" action="{!Cancel}"/>
+			</apex:pageblockbuttons>
+			<apex:outputpanel >
+				<apex:pageblocksection title="Information" showheader="true" columns="1">
+					<apex:inputfield value="{!Expense__c.Date__c}" required="false"/>
+					<apex:inputfield value="{!Expense__c.Payee__c}" required="true"/>
+					<apex:inputfield value="{!Expense__c.Amount__c}" required="false"/>
+					<apex:inputfield value="{!Expense__c.Expense_Account__c}" required="true"/>
+					<apex:inputfield value="{!Expense__c.Expense_Type__c}" required="false"/>
+					<apex:inputfield value="{!Expense__c.Comments__c}" required="false"/>
+					<apex:inputfield value="{!Expense__c.Parent_Expense__c}" required="false"/>
+					<apex:inputfield value="{!Expense__c.Payment_Type__c}" required="false"/>
+					<apex:pageblocksectionitem />
+					 	<apex:inputFile value="{!fileContent}" fileName="{!nameFile}"/>
+					<apex:pageblocksectionitem />
+				</apex:pageblocksection>
+			</apex:outputpanel>
+		</apex:pageblock>
+	</apex:form>
+     <div class="slds">
+         <apex:form >
+    <div class="slds-form--horizontal">
+        <div class="slds-form-element">
+          <label class="slds-form-element__label" for="inputSample2">Payee</label>
+          <div class="slds-form-element__control">
+            <apex:inputfield value="{!Expense__c.Payee__c}" required="true"/>
+          </div>
+        </div>
+        <div class="slds-form-element">
+          <label class="slds-form-element__label" for="inputSample2">Date</label>
+          <div class="slds-form-element__control">
+            <input id="inputSample3" class="slds-input" type="date"/>
+          </div>
+        </div>
+        <div class="slds-form-element">
+          <label class="slds-form-element__label" for="inputSample2">Amount</label>
+          <div class="slds-form-element__control">
+            <apex:inputfield value="{!Expense__c.Amount__c}" required="true" />
+          </div>
+        </div>
+        <div class="slds-form-element">
+          <label class="slds-form-element__label" for="textareaSample2">Textarea Label</label>
+          <div class="slds-form-element__control">
+            <textarea id="textareaSample2" class="slds-textarea"></textarea>
+          </div>
+        </div>
+    </div>
+         </apex:form>
+    </div>
+    </html>
+</apex:page>-->

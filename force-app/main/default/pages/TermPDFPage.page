@@ -1,0 +1,6 @@
+<apex:page standardController="Terms_Library__c" renderAs="pdf" >
+    
+    <apex:outputField value="{!Terms_Library__c.Title__c}"/>
+    <hr/>
+    <apex:outputField value="{!Terms_Library__c.Details__c}"/>
+</apex:page>

@@ -1,0 +1,30 @@
+<apex:page showHeader="false" sidebar="false">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="https://app.box.com/js/static/select.js"></script>
+   
+
+    <script>
+        $(document).ready(function() {
+            
+   		 var options = {
+        clientId: 'x684wh8eba69radlkgik03j7mn2r6zux',
+        linkType: 'shared',
+        multiselect: true
+   		 };
+            
+            boxSelect = new BoxSelect(options);
+            // Register a success callback handler
+            boxSelect.success(function(response) {
+                console.log(response);
+            });
+            // Register a cancel callback handler
+            boxSelect.cancel(function() {
+                console.log("The user clicked cancel or closed the popup");
+            });
+            
+            boxSelect.launchPopup();
+        });
+        
+    </script>    
+    
+</apex:page>

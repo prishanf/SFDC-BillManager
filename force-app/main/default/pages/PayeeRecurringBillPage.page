@@ -1,0 +1,40 @@
+<apex:page standardcontroller="Payee__c" extensions="PayeeRecurringCtrl">
+<apex:messages />
+	<apex:sectionheader title="" subtitle="Create Recrring Bill'"/>
+	<apex:form >
+		<apex:pageblock mode="edit" title="Recurring Bill" >
+			<apex:pageblockbuttons location="bottom" >
+				<apex:commandbutton value="Add" action="{!AddBills}" rerender="tbl"/>
+				<apex:commandbutton value="Cancel" action="{!Cancel}"/>
+			</apex:pageblockbuttons>
+	{!$LABEL['Test_Label']}
+			<!-- **********   [Record Type : Master ]   **********  -->
+			<apex:outputpanel >
+				<apex:pageblocksection title="Information" showheader="true" columns="1">
+					<apex:inputHidden value="{!Payee__c.id}"/> 
+                    <apex:outputfield value="{!Payee__c.Name}"/>
+					<apex:inputfield value="{!Payee__c.Bill_Date__c}" required="true"/>
+                    <apex:inputfield value="{!Payee__c.Due_Date__c}" required="true"/>
+					<apex:inputfield value="{!Payee__c.Frequency__c}" required="true"/>
+                    <apex:inputText value="{!Amount}" required="false" label="Amount"/>
+                   <apex:inputText value="{!numberofTrans}" required="false" label="End After #"/>
+				</apex:pageblocksection>
+			</apex:outputpanel>
+		</apex:pageblock>
+	
+    <apex:outputPanel id="tbl" >
+	    <apex:pageBlock rendered="{!!toInsert.empty}">
+                <apex:pageBlockTable value="{!toInsert}" var="item">
+                <apex:column value="{!item.Bill_Date__c}"/> 
+                <apex:column value="{!item.Due_Date__c}"/> 
+                <apex:column value="{!item.Amount__c}"/> 
+                <apex:column value="{!item.Payee__c}"/> 
+        	</apex:pageBlockTable>
+            <apex:pageblockbuttons location="bottom" >
+				<apex:commandbutton value="Save All" action="{!SaveAll}" rerender="tbl"/>
+				<apex:commandbutton value="Cancel" action="{!Cancel}"/>
+			</apex:pageblockbuttons>
+    </apex:pageBlock>
+        </apex:outputPanel>
+   </apex:form>     
+</apex:page>

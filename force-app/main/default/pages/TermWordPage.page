@@ -1,0 +1,24 @@
+<apex:page standardController="Terms_Library__c" cache="true" contentType="application/msWord#{!Terms_Library__c.Title__c}.doc">
+    
+    
+    
+    <style>
+       .header_holder{
+            height:5.6em;
+            border:1px solid #ccc;
+            width:100%;
+            background:#6d1f7e;
+            color:#fff;
+            font-size: 32px;
+        }
+    </style>
+    <html xmlns:w="urn:schemas-microsoft-com:office:word">
+        <body>
+          <div class="logo">TEST</div>
+          <div class="header_holder"> PROPOSAL FOR THE SUPPLY &amp;   INSTALLATION OF CODING &amp;  MARKING EQUIPMENT </div>
+          <apex:outputField value="{!Terms_Library__c.Title__c}"/>
+            <hr/>
+            <apex:outputField value="{!Terms_Library__c.Details__c}"/>  
+        </body>
+    </html>
+</apex:page>

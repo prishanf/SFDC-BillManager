@@ -1,0 +1,25 @@
+<apex:page standardController="Account" showHeader="true">
+    <apex:pageBlock title="Account Info" >
+        <apex:pageBlockSection columns="1">
+            <apex:outputLink value="/{!account.id}"><apex:outputField value="{!account.Name}" /></apex:outputLink> 
+            <apex:outputField value="{!account.Type}" />
+            <apex:outputField value="{!account.Industry }" />
+            <apex:outputField value="{!account.AnnualRevenue}" />
+        </apex:pageBlockSection>    
+    </apex:pageBlock>
+    
+    <apex:pageBlock title="Contact Info" >
+        <apex:pageBlockSection columns="2">
+            <apex:repeat value="{!Account.Contacts}" var="acc">
+                <apex:pageBlock title="{!acc.name}" >
+                    <apex:pageBlockSection columns="1">
+                        <apex:outputField value="{!acc.phone}"/>
+                        <apex:outputField value="{!acc.fax}"/>
+                        <apex:outputField value="{!acc.email}"/>
+                    </apex:pageBlockSection>
+                </apex:pageBlock>
+                
+            </apex:repeat>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+</apex:page>

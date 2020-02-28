@@ -1,0 +1,22 @@
+<apex:component controller="DataTableWrapperCtrl">
+    <apex:attribute name="fields" description="List of Fields List Can be Schema.SObjectField or Map<String:APIName,String:Label>" 
+                    type="Object[]" assignTo="{!flds}"/>
+    <apex:attribute name="objName" description="API Name of the SObject Name" type="String" assignTo="{!objectName}"/>
+    <apex:attribute name="fieldSetName" description="FieldSet Name." type="String" assignTo="{!fldSetName}"/>
+    
+	<c:JavaScriptCSS ></c:JavaScriptCSS>
+   <table id="{!TableId}">
+   </table> 
+   <script type="text/javascript">
+    
+$(document).ready( function() {
+ var {!TableId} = {} ;  
+ var {!TableId}cols = JSON.parse('{!ColumJSON}');
+ var {!TableId}data = JSON.parse('{!Data}');
+ $('#{!TableId}').DataTable( {
+        	data: {!TableId}data,
+            columns:{!TableId}cols
+    	} );
+} );
+</script>
+</apex:component>

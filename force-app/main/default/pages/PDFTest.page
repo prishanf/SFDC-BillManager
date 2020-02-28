@@ -1,0 +1,58 @@
+<apex:page renderAs="html" showHeader="false" applyBodyTag="false" applyHtmlTag="false" >
+<html>
+ 
+<head>
+  <apex:stylesheet value="{!$Resource.bootstrap}"/>   
+   
+  <style>
+      @page { 
+    size:landscape;  
+    
+    @bottom-right {
+        content: "Page " counter(page) " of " counter(pages);
+     } 
+ }
+  body{height:400px;}
+    .show-grid [class*="span"]  {
+background-color: #eee;
+text-align: left;
+
+margin-top: 5px; 
+margin-bottom: 5px;      
+}
+   .number[class*=span]{
+      text-align: right;
+      padding:0 10px;
+    }
+    .text[class*=span]{
+      text-align: center;
+      
+    }
+    .amount{
+      font-size:20px;
+    }
+    .mearge-data{
+      font-size: 18px;
+      border-bottom:1px solid
+    }
+    .wrapper{max-width:750px; padding:10px;border:1px solid;margin:auto;padding:10px}
+  </style> 
+    </head>
+ <body>
+     
+    
+  <apex:outputPanel layout="block" styleClass="standardBackground"/>
+	<div class="row show-grid">
+        <div class="span4 text">
+            hellow
+        </div>
+        <div class="span4 text">
+            hellow
+        </div>
+        <div class="span4 text">
+            hellow
+        </div>
+    </div> 
+     </body>   
+ </html>   
+</apex:page>

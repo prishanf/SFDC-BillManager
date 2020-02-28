@@ -1,0 +1,35 @@
+<apex:page controller="ImageUploadCtrl" >
+    <apex:includeScript value="https://code.jquery.com/jquery.min.js"/>
+    <apex:includeScript value="{!URLFOR($Resource.jquery_ezdz,'/jquery.ezdz.min.js')}"/>
+	<apex:stylesheet value="{!URLFOR($Resource.jquery_ezdz,'/jquery.ezdz.min.css')}"/>    
+    <apex:form >
+        <h2>
+            HHH
+        </h2>
+    	<apex:inputText value="{!imageName}" />
+        <apex:inputFile value="{!att.body}" fileName="{!att.name}"></apex:inputFile>
+    	<apex:commandButton action="{!uploadFile}" value="upload"/>
+    </apex:form>
+        <script>
+        $('[type="file"]').ezdz({
+            text: 'drop a picture',
+            validators: {
+                maxWidth:  600,
+                maxHeight: 400
+            },
+            reject: function(file, errors) {
+                if (errors.mimeType) {
+                    alert(file.name + ' must be an image.');
+                }
+
+                if (errors.maxWidth) {
+                    alert(file.name + ' must be width:600px max.');
+                }
+
+                if (errors.maxHeight) {
+                    alert(file.name + ' must be height:400px max.');
+                }
+            }
+        });
+    </script>
+</apex:page>

@@ -1,0 +1,45 @@
+<apex:page controller="BillDashBoardController" showHeader="true" sidebar="false">
+    <c:JavaScriptCSS ></c:JavaScriptCSS>
+     <div class="row">
+         <div class="col-md-10"> 
+             <div class="panel panel-danger">
+                <div class="panel-heading">Outstaing Bills <span class="pull-right badge"> <apex:outputText value="{0,number,$#,###,###.00}">
+                            <apex:param value="{!OutstaingTotal}" />
+                          </apex:outputText></span> </div>
+          		<div class="panel-body">
+            		 <apex:dataTable value="{!OutstaingBills}" var="bill" id="theTable" 
+                        styleClass="table table-bordered">
+                        <apex:column >
+                            <apex:facet name="header">Bill</apex:facet>
+                            <apex:outputLink value="/{!URLFOR(bill.Id)}">{!bill.name}</apex:outputLink>
+                        </apex:column>
+                         
+                         
+                        <apex:column >
+                            <apex:facet name="header">Payee</apex:facet>
+                            <apex:outputText value="{!bill.Payee__r.Name}"/>
+                        </apex:column>
+                        <apex:column styleClass="numericalColumn">
+                            <apex:facet name="header">Category</apex:facet>
+                            <apex:outputText value="{!bill.Bill_Category__R.Name}"/>
+                        </apex:column>
+                        <apex:column styleClass="numericalColumn">
+                            <apex:facet name="header">Bill Date</apex:facet>
+                            <apex:outputText value="{!bill.Due_Date__c}"/>
+                        </apex:column>
+                        <apex:column style="text-align:right" headerClass="CurrencyElement">
+                            <apex:facet name="header">Amount</apex:facet>
+                            <apex:outputText value="{0,number,$#,###,###.00}">
+                            	<apex:param value="{!bill.Amount__c}" />
+                           </apex:outputText>
+                        </apex:column>
+                        <apex:column styleClass="numericalColumn">
+                            <apex:facet name="header">Due Date</apex:facet>
+                            <apex:outputText value="{!bill.Due_Date__c}"/>
+                        </apex:column> 
+                    </apex:dataTable>
+          		</div>
+        	</div>
+         </div>
+    </div>
+</apex:page>

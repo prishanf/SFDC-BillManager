@@ -1,0 +1,20 @@
+<apex:page controller="BalanceSheetPageController" >
+    <apex:form >
+    <apex:sectionHeader subtitle="Balance Sheet Home" title="Balance Sheet"/>
+    <apex:pageBlock >
+    	<apex:pageBlockSection columns="1">
+        	<apex:selectList value="{!selectedYear}" size="1" multiselect="false" label="Select Year">
+                	<apex:selectOptions value="{!years}"></apex:selectOptions>
+            </apex:selectList>
+            <apex:selectList value="{!selectedAccount}" size="1" multiselect="false" label="Account">
+                	<apex:selectOptions value="{!accounts}"></apex:selectOptions>
+            </apex:selectList>
+        </apex:pageBlockSection>
+        <apex:pageBlockButtons >
+        	<apex:commandButton action="{!showBalanceSheet}" value="Show Balance Sheet"/>
+            <apex:commandButton action="{!savePdf}" value="Save PDF"/>
+            savePdf
+        </apex:pageBlockButtons>
+    </apex:pageBlock>
+        </apex:form>
+</apex:page>

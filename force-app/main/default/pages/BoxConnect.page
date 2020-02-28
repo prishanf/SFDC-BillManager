@@ -1,0 +1,21 @@
+<apex:page showheader="false" sidebar="false" cache="false" contenttype="text/html" controller="BoxConnect">
+    <apex:form >
+        <apex:commandbutton id="connectToBox" value="Connect to Box" action="{!boxConnect}" rendered="{!showConntect}">
+        </apex:commandbutton>
+        
+        <apex:commandbutton id="getFolder" value="getFolder" action="{!getBoxFolder}">
+        </apex:commandbutton>
+        <br/>
+        <apex:inputTextarea value="{!queryString}"/>
+        <br/>
+        <apex:commandbutton id="doQuery" value="Do Query" action="{!doQuery}">
+        </apex:commandbutton>
+        
+        <apex:outputtext id="outputText" value="{!valueToShow}">
+        </apex:outputtext>
+        <br/> <br/>
+        <apex:outputtext id="outHttpHeader" value="{!outHttpHeader}">
+        </apex:outputtext>
+        
+    </apex:form>
+</apex:page>

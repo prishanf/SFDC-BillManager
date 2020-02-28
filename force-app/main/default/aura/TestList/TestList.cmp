@@ -1,0 +1,45 @@
+<aura:component >
+    <aura:registerEvent name="NavigateToDetails" type="c:NavigateToDetails" /> 
+    <aura:attribute type="Expense__c[]" name="ExpenseList" />
+    <aura:attribute type="Object[]" name="FieldListJSON" />
+     <!--<ltng:require styles="/resource/SLDS103/assets/styles/salesforce-lightning-design-system-ltng.css" />-->
+     <ltng:require styles="/resource/materialize/css/materialize.min.css"/>
+    <ltng:require scripts="/resource/materialize/js/jquery.min.js"   />
+    <ltng:require scripts="/resource/materialize/js/materialize.min.js"   />
+    <div class="slds">
+        <h2>List Component</h2>
+    
+        <aura:iteration items="{!v.ExpenseList}" var="exp">
+            <ui:outputText value="{!exp.Name}" />
+            <ui:button label="go" press="c.showDetails" buttonTitle="{!exp.Id}" />
+            <br/>
+        </aura:iteration>
+        <br/>
+        <div class="container"> 
+         <div class="section">
+                <div class="row">
+                    <form class="col s12" id="formValidate">
+                        
+                       <aura:iteration items="{!v.FieldListJSON}" var="fld">
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input value="" id="{!fld.name}" type="text" class="validate" data-data="required"/>
+                                <label for="{!fld.name}">{!fld.label}</label>
+                            </div>
+                        </div>
+                      </aura:iteration>
+                      
+                    </form>
+                    <button class="btn waves-effect waves-light right" onclick="{!c.formValidate}">Submit
+                                             
+                                            </button>
+                  </div>
+            </div>
+        
+        </div>
+        <div class="slds-form--stacked">
+            
+           
+        </div>
+    </div>
+</aura:component>

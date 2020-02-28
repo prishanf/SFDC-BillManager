@@ -1,0 +1,58 @@
+<apex:component controller="GenericListViewCompCtrl" >
+    <apex:attribute name="cols" description="Field to Display on the teable" type="String[]" required="true" assignTo="{!ColFields}" />
+    <apex:attribute name="objectName" description="Name of the Object which related list items belongs to" type="String" required="true" assignTo="{!objName}" />
+    <apex:attribute name="title" description="Section title" type="String" />
+    <apex:attribute name="filterFields" description="FieldSet name or Array of Field name to display as filters when open in Full list mode" type="String" assignTo="{!FFields}" />
+    <apex:attribute name="displayLimit" description="Limit Number of Items Display on the table Default is 20" type="Integer" assignTo="{!PageSize}" />
+    <apex:attribute name="dataFiler" description="Optional Data Filter List<String>" type="String[]" assignTo="{!filter}"/>
+    <apex:outputPanel >
+    <apex:pageBlock mode="maindetail" id="ListSec">
+      <apex:messages /> 
+      <apex:pageBlockSection columns="1" title="{!title}" collapsible="false" showHeader="true" >
+           <apex:outputPanel rendered="{!Records.size > 0 }">
+            <apex:pageBlockTable value="{!Records}" var="cont" id="mid" width="100%">
+                <apex:column headerValue="Action" styleClass="actionColumn">
+                    <apex:outputLink target="_blank" value="/{!cont.id}">View</apex:outputLink> 
+                    <apex:outputLink target="_top" value="/{!cont.id}/e" rendered="{!ShowEdit}" >| Edit </apex:outputLink>
+                </apex:column>
+                <apex:repeat value="{!fieldsList}" var="f">
+                    <apex:column value="{!cont[f['name']]}" rendered="{!f['sortable']=false}"/>
+                    <apex:column value="{!cont[f['name']]}" rendered="{!f['sortable']=true}" >
+                         <apex:facet name="header">
+                           <apex:commandLink immediate="true" reRender="{!$Component.ListSec}" status="status"  action="{!paginator.doSort}" value="{!$ObjectType[objectName].fields[f['name']].Label}{!IF(paginator.sortExpression==f['name'],IF(paginator.sortDirection='ASC','▼','▲'),'')}">
+                               <apex:param value="{!f['name']}" name="column" assignTo="{!paginator.sortExpression}" ></apex:param> 
+                           </apex:commandLink>
+                         </apex:facet>
+                       </apex:column>
+                </apex:repeat>
+            </apex:pageBlockTable>
+            <apex:panelGrid columns="6" rendered="{!paginator.showPaginationButtons}">
+                <apex:commandButton styleClass="pgbtn" status="status" reRender="{!$Component.ListSec}" value=" |< " action="{!paginator.first}" disabled="{!!paginator.hasPrevious}" title="FirstPage"/>
+                <apex:commandButton styleClass="pgbtn" status="status" reRender="{!$Component.ListSec}"  value=" < " action="{!paginator.previous}" disabled="{!!paginator.hasPrevious}" title="PreviousPage"/>
+                <apex:commandButton styleClass="pgbtn" status="status" reRender="{!$Component.ListSec}"  value=" > " action="{!paginator.next}" disabled="{!!paginator.hasNext}" title="Label.NextPage"/>
+                <apex:commandButton styleClass="pgbtn" status="status" reRender="{!$Component.ListSec}"  value=" >| " action="{!paginator.last}" disabled="{!!paginator.hasNext}" title="Label.LastPage"/>
+                <apex:outputText value="{!paginator.info}"/>          
+            </apex:panelGrid> 
+            <apex:outputPanel style="color:#4AA02C;font-weight:bold">
+                  <apex:actionStatus id="status">
+                    <apex:facet name="start">
+                    <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.25; z-index: 1000; background-color: black;">&nbsp;</div>
+                    <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 15% 50%">
+                        <div style="display: inline-block; padding: 2px; background-color: #fff; width: 125px;">
+                            <img src="/img/loading.gif" style="float: left; margin: 8px;" />
+                            <span style="display: inline-block; padding: 10px 0px;">Please Wait...</span>
+                        </div>
+                    </div>
+                    </apex:facet>
+                </apex:actionStatus>
+              </apex:outputPanel>   
+            </apex:outputPanel>
+          <apex:outputPanel rendered="{!paginator.NoOfRecords = 0 }">
+           <table class="list" border="0" cellspacing="0" cellpadding="0">
+                <tbody><tr class="headerRow"><th scope="col" class="noRowsHeader">No records to display </th></tr>
+            </tbody></table>
+           </apex:outputPanel>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+    </apex:outputPanel>
+</apex:component>

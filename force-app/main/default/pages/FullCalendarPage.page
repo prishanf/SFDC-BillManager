@@ -1,0 +1,55 @@
+<apex:page controller="FullCalendarCtrl"  id="page">
+    <link href="{!$Resource.fullCalendar}/fullcalendar.min.css" rel="stylesheet" />
+    <link href="{!$Resource.fullCalendar}/fullcalendar.print.css" rel="stylesheet" media="print" />
+    <script src="{!$Resource.fullCalendar}/jquery.min.js"></script>
+    <script src="{!$Resource.fullCalendar}/moment.min.js"></script>
+    <script src="{!$Resource.fullCalendar}/fullcalendar.min.js"></script>
+    <div id="calendar"></div>
+    <script>
+    //We need to wrap everything in a doc.ready function so that the code fires after the DOM is loaded
+    $(document).ready(function() {
+        
+        var current_url = '';
+        var new_url     = '';
+        
+        //Call the fullCallendar method. You can replace the '#calendar' with the ID of the dom element where you want the calendar to go. 
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            editable: false,
+            events: function( start, end, timezone, callback ) {
+                    console.log('before', new_url,current_url);
+                    new_url  = end.year() +'-'+end.month()  +'-'+ end.day() ;
+                    console.log('after',new_url,current_url);
+                    var year = start.year();
+                    var month = start.month();
+                
+                var startDate = start.format("D/MM/YYYY");
+                var endDate =   end.format("D/MM/YYYY");
+                console.log('start-end date',startDate,endDate);
+                   if( new_url != current_url ){
+                        prishan.FullCalendarCtrl.getEvents(startDate, endDate ,function(result, event){
+                            //console.log(result);
+                        current_url = new_url;
+                        result.map(function(item){
+                            //console.log(item);
+                            title = item.title +"("+ item.amount+")";
+                            item.start = item.startString;
+                            item.allDay = true;
+                            return item;
+                        });     
+                        callback(result);
+                      });  
+                   }else{
+                       //callback(user_events);
+                   }
+                }
+        });
+        
+      
+    });
+</script>
+</apex:page>

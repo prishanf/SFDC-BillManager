@@ -1,0 +1,70 @@
+<apex:page controller="ImportStatmentCSVCtrl">
+    <apex:messages />
+    <apex:form id="theForm">
+      <apex:pageBlock >
+          <apex:pageBlockSection >
+             <p> Upload .qfx, ofx, qob file time to parse and display transactions.
+                 
+              </p> 
+            <apex:inputFile value="{!fileContent}" fileName="{!nameFile}"/>
+            <apex:commandButton value="Upload" action="{!upload}"/>
+          </apex:pageBlockSection>
+       </apex:pageBlock>
+    </apex:form>
+    <p>{!output}</p>
+ 	<apex:repeat value="{!groupByMemo}" var="key" >
+        <h2>{!key}</h2>
+        <table>
+            <apex:variable var="total" value="{!0}"/>
+            <apex:repeat value="{!groupByMemo[key]}" var="exp" >
+            <tr>
+                <td>{!exp.tdate}</td>
+                <td>{!exp.Name}</td>
+                <td>{!exp.Memo}</td>
+                 <td>{!exp.Amount}</td>
+                 <td>{!exp.TransType}</td>
+                <apex:variable var="total" value="{!total + exp.Amount}"/>
+            </tr>
+            </apex:repeat>
+        </table>
+        <apex:outputText value="{!total}"/><br/><br/>
+    </apex:repeat>
+    <br/><br/>
+	<apex:repeat value="{!groupByCategory}" var="catKey" >
+            <h2>
+                {!catKey}
+            </h2>
+            <table>
+                   
+                        <apex:repeat value="{!groupByCategory[catKey]}" var="exp" >
+                             <tr>
+                                <td>{!exp.Date__c}</td>
+                                <td>{!exp.Bill_Payee__c}</td>
+                                <td>{!exp.Type__c}</td>
+                                <td>{!exp.Amount__c}</td>
+                                <td>{!exp.Category__c}</td>
+                              </tr>   
+                         </apex:repeat>
+                    
+                </table>
+    </apex:repeat>
+    <hr/>
+    <H2> Group By Month</H2>
+     	<apex:repeat value="{!groupByMonth}" var="key" >
+        <h2>{!key}</h2>
+        <table>
+            <apex:variable var="total" value="{!0}"/>
+            <apex:repeat value="{!groupByMonth[key]}" var="exp" >
+            <tr>
+                <td>{!exp.tdate}</td>
+                <td>{!exp.Name}</td>
+                <td>{!exp.Memo}</td>
+                 <td>{!exp.Amount}</td>
+                 <td>{!exp.TransType}</td>
+                <apex:variable var="total" value="{!total + exp.Amount}"/>
+            </tr>
+            </apex:repeat>
+        </table>
+        <apex:outputText value="{!total}"/><br/><br/>
+    </apex:repeat>
+</apex:page>

@@ -1,0 +1,34 @@
+<apex:page controller="BulkReceiptCtrl" renderAs="pdf" showHeader="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false">
+ 
+ <html> 
+   <head>
+   <apex:stylesheet value="{!$Resource.bootstrap}"/>  
+   <style>
+      @page { 
+  		size:landscape;  
+     }
+  	.show-grid [class*="span"] {background-color: #fff;margin-top: 10px; margin-bottom: 10px;}
+    .number[class*=span]{text-align: right;padding:0 10px;}
+    .text[class*=span]{text-align: center;}
+    .amount{font-size:24px;}
+    .mearge-data{font-size: 20px;border-bottom:1px solid;font-weight:bold}
+    .container{border:1px solid;height:400px;font-size: 18px; }
+       .pagebreak {
+	display: block;
+	clear: both;
+	page-break-after: always;
+}
+        .text-success {color:black}
+  </style> 
+ </head>
+<body>
+ <apex:repeat value="{!rentPayments}" var="item" >
+       <c:RentReceiptComp rentObj="{!item.Income}" amountInText="{!item.amountInText}"/>
+     <div class="pagebreak"/>
+ </apex:repeat>
+
+    
+ </body>
+</html>   
+
+</apex:page>

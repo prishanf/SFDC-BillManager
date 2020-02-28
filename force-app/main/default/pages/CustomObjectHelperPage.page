@@ -1,0 +1,32 @@
+<apex:page controller="CustomObjectHelperCtrl">
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <apex:form >
+    <apex:pageBlock title="Create New Custom Object" mode="edit" >
+          <apex:pageBlockSection title="Info" columns="2">
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Plural Label" />
+                    <c:InputText value="{!newObject.pluralLabel}"  hasError="true" errormap="{!errormap}"/>
+             </apex:pageBlockSectionItem>
+             <apex:pageBlockSectionItem >
+                 <apex:outputLabel value="Plural Label" />
+                <c:InputText value="{!newObject.pluralLabel}" />
+             </apex:pageBlockSectionItem>   
+             
+           </apex:pageBlockSection>
+           <apex:pageBlockButtons >
+            <apex:commandButton action="{!save}" value="Save"/>
+            <apex:commandButton action="{!save}" value="Cancle"/>
+           </apex:pageBlockButtons>
+  
+        </apex:pageBlock>
+    </apex:form>
+    <script>
+    function updateFullName(){
+                console.log($("input[id$='labelField']").val());
+		var apiName = $("input[id$='labelField']").val().replace(/ /g,"_");                
+    	console.log(apiName);
+        $("input[id$='objectNameField']").val(apiName);
+    }
+    
+    </script>
+</apex:page>

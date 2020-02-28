@@ -1,0 +1,17 @@
+<apex:page controller="AdminCustomSettingCtrl">
+    
+     <apex:pageBlock title="Payee List ({!customSettings.size})" rendered="{!customSettings.size>0}">
+        <apex:pageBlockTable value="{!customSettings}" var="item" rowClasses="odd,even"  styleClass="tableClass" >
+           
+            <apex:column title="Transaction Date" headerValue="Id">
+                <apex:outputText value="{!item.Id}"/>
+            </apex:column>
+            <apex:column title="Payee Name" headerValue="Payee Name">
+                <apex:outputText value="{!item.Name}"/>
+            </apex:column>
+            <apex:column title="Payee Name" headerValue="Payee Map Name">
+                <apex:outputText value="{!item.Payee_Name__c}"/>
+            </apex:column>
+       </apex:pageBlockTable>
+   </apex:pageBlock>
+</apex:page>
