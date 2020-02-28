@@ -13,7 +13,7 @@ stages:
          vmImage: 'ubuntu-latest'
        container:
          # container means all our code will run inside this "container", our container will be our docker image
-         image: hzhao10/
+         image: hzhao10/sfdx-demo
          # endpoint will be configured in service connections: https://dev.azure.com/HenryDemo10/SFDX%20Demo/_settings/adminservices
          endpoint: sfdx-docker
  
