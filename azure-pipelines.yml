@@ -13,9 +13,9 @@ stages:
          vmImage: 'ubuntu-latest'
        container:
          # container means all our code will run inside this "container", our container will be our docker image
-         image: prishanf/
+         image: prishanf/my-first-repo:latest
          # endpoint will be configured in service connections: https://dev.azure.com/HenryDemo10/SFDX%20Demo/_settings/adminservices
-         endpoint: my-first-repo:latest
+         endpoint: sfdx-docker
  
        steps:
        # this first checks out the code
